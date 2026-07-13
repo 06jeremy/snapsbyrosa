@@ -69,6 +69,19 @@ const jsonLd = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      // Client-side gate. The coming-soon page (/) sets sessionStorage 'sbr-auth'
+      // after the correct password; every page built on this layout (/home/,
+      // /legal, /work/…) bounces back to the holding page without it. Runs first
+      // in <head> so protected content never paints for a locked-out visitor.
+      // NOTE: this only deters casual visitors — the markup still ships to the
+      // browser. For real protection put /home/ behind Cloudflare Access.
+      try {
+        if (sessionStorage.getItem('sbr-auth') !== '1') {
+          window.location.replace('/');
+        }
+      } catch (e) {}
+    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="SNAPSBYROSA" />
