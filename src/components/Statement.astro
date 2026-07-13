@@ -81,4 +81,11 @@ const marquee = ['Photography', 'Personal Branding', 'Short Film', 'Reels & Soci
     padding-inline: 1.5rem;
   }
   .marquee__dot { color: var(--red); font-style: normal; font-size: 0.4em; margin-left: 2.2rem; }
+
+  @media (max-width: 860px) {
+    /* Matches Services: the sticky pin-stack is disabled on phones, so there's
+       nothing to slide up over. Zero the negative overlap so this block just
+       follows normally instead of yanking up over the cards (which jumped). */
+    .statement { margin-top: 0; }
+  }
 </style>

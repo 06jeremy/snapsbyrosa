@@ -167,7 +167,14 @@ const services = [
   }
 
   @media (max-width: 860px) {
-    .svc__card { min-height: 78vh; }
+    /* Phones: drop the sticky pin-stack + overlap entirely. Native sticky with
+       tall vh cards fights the mobile address-bar resize, which is the main
+       cause of the scroll "jumping" and jitter. Here the cards simply stack and
+       scroll like normal full-bleed sections — smooth and predictable. The
+       matching Statement negative margin-top is also zeroed at this breakpoint,
+       and .svc__lock (the pin spacer) is hidden since there's nothing to pin. */
+    .svc__card { position: static; top: auto; min-height: 78vh; }
+    .svc__lock { display: none; }
     .svc__body { grid-template-columns: 1fr; gap: 1.5rem; max-width: none; }
     .svc__bg::after {
       background:

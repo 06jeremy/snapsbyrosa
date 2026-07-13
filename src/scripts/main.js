@@ -3,6 +3,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Mobile browsers grow/shrink the viewport as the address bar hides/shows.
+// By default ScrollTrigger treats that as a resize and recalculates every
+// trigger mid-scroll — which makes the page visibly jump AND makes reveal
+// animations fire at the wrong scroll point (they play before you reach them).
+// Ignoring that specific resize keeps all positions stable, so scrolling stays
+// smooth and animations trigger exactly where they should on phones.
+ScrollTrigger.config({ ignoreMobileResize: true });
+
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(pointer: fine)').matches;
 
