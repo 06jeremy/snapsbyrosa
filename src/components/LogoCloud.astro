@@ -19,6 +19,8 @@
 //   • CSA                   — awaiting logo
 // Assets live in /public/img/logos/. Any transparent PNG/SVG works — colour is
 // normalised away, so no need to source special white versions.
+import { Image } from 'astro:assets';
+import { getLocalImage } from '../lib/images.ts';
 const clients = [
   { name: 'CINEX', img: '/img/logos/cinex.png', w: 2943, h: 918 },
   { name: 'MEO', img: '/img/logos/meo.png', w: 734, h: 174 },
@@ -35,7 +37,7 @@ const clients = [
       <div class="logocloud__track" data-marquee-track data-marquee-speed="40" data-marquee-slow="18" aria-hidden="true">
         {[...clients, ...clients].map((c) => (
           c.img
-            ? <span class="logocloud__item"><img class="logocloud__logo" src={c.img} alt={c.name} width={c.w} height={c.h} loading="lazy" decoding="async" /></span>
+            ? <span class="logocloud__item"><Image class="logocloud__logo" src={getLocalImage(c.img)} alt={c.name} widths={[300, 600]} sizes="200px" format="webp" quality={82} loading="lazy" decoding="async" /></span>
             : <span class="logocloud__item logocloud__item--text">{c.name}</span>
         ))}
       </div>

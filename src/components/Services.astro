@@ -5,6 +5,8 @@
 // number + title header stacked and visible (oddlymade-style).
 //
 // NOTE: "Included" bullets can be edited freely.
+import { Image } from 'astro:assets';
+import { getLocalImage } from '../lib/images.ts';
 const services = [
   {
     n: '01',
@@ -39,7 +41,7 @@ const services = [
     {services.map((s, i) => (
       <article class="svc__card" style={`--i:${i}`}>
         <div class="svc__bg">
-          <img src={s.img} alt="" width={s.w} height={s.h} loading="lazy" decoding="async" aria-hidden="true" />
+          <Image src={getLocalImage(s.img)} alt="" widths={[640, 900, 1199]} sizes="100vw" format="webp" quality={70} loading="lazy" decoding="async" aria-hidden="true" />
         </div>
         <div class="svc__inner container">
           <div class="svc__head-row">

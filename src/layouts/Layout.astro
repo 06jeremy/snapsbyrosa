@@ -8,7 +8,9 @@ const {
 } = Astro.props;
 const site = 'https://snapsbyrosa.com';
 const canonical = site + path;
-const ogImage = `${site}/img/01.jpg`;
+// Social-share image. Kept as a plain file in /public (NOT run through
+// astro:assets) because scrapers need a stable, un-hashed absolute URL.
+const ogImage = `${site}/img/og-cover.jpg`;
 const ogImageAlt = 'Editorial personal-brand portrait by SNAPSBYROSA';
 
 // Structured data. Describes the studio as a service + its founder so search
@@ -120,7 +122,6 @@ const jsonLd = {
       href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5..125,400..800;1,62.5..125,400..800&display=swap"
       rel="stylesheet"
     />
-    <link rel="preload" as="image" href="/img/01.jpg" fetchpriority="high" />
     <script is:inline>
       // Progressive enhancement flag
       document.documentElement.classList.remove('no-js');

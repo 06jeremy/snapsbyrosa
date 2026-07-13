@@ -4,7 +4,9 @@
 // image; on hover a red "wipe" slides smoothly across and
 // reveals a "View <project> work" CTA. Each frame links to its own gallery page
 // at /work/<slug>. Data (incl. placeholder images) lives in ../data/work.js.
+import { Image } from 'astro:assets';
 import { works } from '../data/work.js';
+import { getLocalImage } from '../lib/images.ts';
 ---
 <section class="work section" id="work">
   <div class="container">
@@ -24,11 +26,13 @@ import { works } from '../data/work.js';
           <a class="wk__link" href={`/work/${w.slug}`} aria-label={`View the ${w.title} work`}>
             <span class="wk__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <figure class="wk__media">
-              <img
-                src={w.cover}
+              <Image
+                src={getLocalImage(w.cover)}
                 alt={`${w.title} — ${w.cat}, by SNAPSBYROSA`}
-                width="1600"
-                height="800"
+                widths={[640, 960, 1280, 1500]}
+                sizes="(max-width: 720px) 100vw, 88vw"
+                format="webp"
+                quality={72}
                 loading="lazy"
                 decoding="async"
               />

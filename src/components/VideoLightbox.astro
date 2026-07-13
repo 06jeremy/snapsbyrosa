@@ -1,0 +1,134 @@
+---
+// Reusable, lazy video lightbox. Mount it ONCE on a page, then make ANY element
+// open it by giving that element a `data-video` attribute. Nothing about the
+// player is loaded until the user actually clicks — so it costs ~0 on page load.
+//
+// Supported `data-video` values:
+//   data-video="youtube:VIDEO_ID"   → YouTube (privacy-friendly nocookie embed)
+//   data-video="vimeo:VIDEO_ID"     → Vimeo
+//   data-video="/video/film.mp4"    → self-hosted file in /public/video
+//   data-video="https://youtu.be/…" → full YouTube/Vimeo URLs also work
+//
+// Example trigger anywhere on the page:
+//   <button data-video="youtube:dQw4w9WgXcQ">Watch the film</button>
+---
+<div class="vlb" data-video-lightbox hidden>
+  <button class="vlb__close" type="button" data-vlb-close aria-label="Close video">
+    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <div class="vlb__stage" data-vlb-stage role="dialog" aria-modal="true" aria-label="Video player"></div>
+</div>
+
+<script is:inline>
+  (function () {
+    var root = document.querySelector('[data-video-lightbox]');
+    if (!root) return;
+    var stage = root.querySelector('[data-vlb-stage]');
+    var closeBtn = root.querySelector('[data-vlb-close]');
+    var lastFocus = null;
+
+    // Turn a data-video value into an embeddable source.
+    function resolve(v) {
+      if (!v) return null;
+      if (v.indexOf('youtube:') === 0)
+        return { type: 'iframe', src: 'https://www.youtube-nocookie.com/embed/' + v.slice(8) + '?autoplay=1&rel=0' };
+      if (v.indexOf('vimeo:') === 0)
+        return { type: 'iframe', src: 'https://player.vimeo.com/video/' + v.slice(6) + '?autoplay=1' };
+      var yt = v.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+      if (yt) return { type: 'iframe', src: 'https://www.youtube-nocookie.com/embed/' + yt[1] + '?autoplay=1&rel=0' };
+      var vm = v.match(/vimeo\.com\/(\d+)/);
+      if (vm) return { type: 'iframe', src: 'https://player.vimeo.com/video/' + vm[1] + '?autoplay=1' };
+      return { type: 'video', src: v }; // self-hosted file
+    }
+
+    function open(value) {
+      var s = resolve(value);
+      if (!s) return;
+      lastFocus = document.activeElement;
+      stage.innerHTML = '';
+      if (s.type === 'iframe') {
+        var wrap = document.createElement('div');
+        wrap.className = 'vlb__ratio';
+        var f = document.createElement('iframe');
+        f.src = s.src;
+        f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+        f.setAttribute('allowfullscreen', '');
+        f.setAttribute('title', 'Video player');
+        wrap.appendChild(f);
+        stage.appendChild(wrap);
+      } else {
+        var vid = document.createElement('video');
+        vid.src = s.src;
+        vid.controls = true;
+        vid.autoplay = true;
+        vid.playsInline = true;
+        vid.className = 'vlb__video';
+        stage.appendChild(vid);
+      }
+      root.hidden = false;
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(function () {
+        root.classList.add('is-open');
+        closeBtn.focus();
+      });
+    }
+
+    function close() {
+      root.classList.remove('is-open');
+      document.body.style.overflow = '';
+      // Clear after the fade so playback stops and the iframe/video is torn down.
+      var clear = function () { stage.innerHTML = ''; root.hidden = true; };
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) clear();
+      else setTimeout(clear, 200);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    // Delegated trigger: any [data-video] anywhere opens the lightbox.
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-video]');
+      if (!t) return;
+      e.preventDefault();
+      open(t.getAttribute('data-video'));
+    });
+
+    closeBtn.addEventListener('click', close);
+    root.addEventListener('click', function (e) { if (e.target === root) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !root.hidden) close(); });
+  })();
+</script>
+
+<style>
+  .vlb {
+    position: fixed; inset: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    padding: clamp(1rem, 4vw, 3rem);
+    background: rgba(10, 8, 6, 0.82);
+    opacity: 0; transition: opacity 0.22s var(--ease);
+  }
+  .vlb.is-open { opacity: 1; }
+  .vlb__stage {
+    width: min(1100px, 100%);
+    transform: scale(0.97); transition: transform 0.22s var(--ease);
+  }
+  .vlb.is-open .vlb__stage { transform: scale(1); }
+  .vlb__ratio { position: relative; width: 100%; aspect-ratio: 16 / 9; }
+  .vlb__ratio iframe {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    border: 0; border-radius: 8px; background: #000;
+  }
+  .vlb__video { display: block; width: 100%; max-height: 85vh; border-radius: 8px; background: #000; }
+  .vlb__close {
+    position: absolute; top: clamp(0.75rem, 2vw, 1.4rem); right: clamp(0.75rem, 2vw, 1.4rem);
+    width: 44px; height: 44px; display: grid; place-items: center;
+    border: 0; border-radius: 50%; cursor: pointer;
+    background: rgba(255, 255, 255, 0.1); color: #fff;
+    transition: background 0.25s var(--ease);
+  }
+  .vlb__close:hover { background: var(--red); }
+  .vlb__close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    .vlb, .vlb__stage { transition: none; }
+    .vlb__stage { transform: none; }
+  }
+</style>

@@ -2,10 +2,13 @@
 // Per-project gallery. Static route generated from ../../data/work.js — one page
 // per work. Shows the full frame set (uncropped) with prev/next project nav and
 // a CTA back into the enquiry flow.
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+import VideoLightbox from '../../components/VideoLightbox.astro';
 import { works } from '../../data/work.js';
+import { getLocalImage } from '../../lib/images.ts';
 
 export function getStaticPaths() {
   return works.map((work, i) => ({
@@ -36,9 +39,13 @@ const description = `${work.title}: ${work.desc}`;
     <div class="wp__gallery container">
       {work.gallery.map((src, i) => (
         <figure class="wp__frame">
-          <img
-            src={src}
+          <Image
+            src={getLocalImage(src)}
             alt={`${work.title} — frame ${i + 1} of ${work.gallery.length}, by SNAPSBYROSA`}
+            widths={[640, 960, 1280, 1500]}
+            sizes="(max-width: 860px) 100vw, 72vw"
+            format="webp"
+            quality={74}
             loading={i === 0 ? 'eager' : 'lazy'}
             decoding="async"
           />
@@ -65,6 +72,7 @@ const description = `${work.title}: ${work.desc}`;
     </section>
   </main>
   <Footer />
+  <VideoLightbox />
 </Layout>
 
 <script>

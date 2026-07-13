@@ -63,8 +63,19 @@ function initHero() {
   if (!prefersReduced) {
     gsap.set(words, { yPercent: 110 });
     gsap.set(tag, { autoAlpha: 0, y: 20 });
+    const title = hero.querySelector('.hero__title');
     const tl = gsap.timeline({ delay: 0.15 });
-    tl.to(words, { yPercent: 0, duration: 1.1, ease: 'expo.out', stagger: 0.09 })
+    tl.to(words, {
+        yPercent: 0,
+        duration: 1.1,
+        ease: 'expo.out',
+        stagger: 0.09,
+        // Add the red drop-shadow glow only AFTER the letters have risen. The
+        // filter re-rasterises the whole wordmark, so applying it during the
+        // rise is what made the intro stutter — deferring it keeps that motion
+        // smooth and the glow simply fades in on the settled title.
+        onComplete: () => title && title.classList.add('is-lit'),
+      })
       .to(tag, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '-=0.6');
 
     // Parallax on the background image — DESKTOP ONLY. On touch devices a

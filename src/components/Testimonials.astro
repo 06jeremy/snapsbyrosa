@@ -10,6 +10,8 @@
 // PLACEHOLDER IMAGES reuse portfolio frames from /public/img. Swap posters +
 // headshots for the real people (with their permission) before launch. Do NOT
 // invent quotes — pull the wording straight from what each client sends back.
+import { Image } from 'astro:assets';
+import { getLocalImage } from '../lib/images.ts';
 
 const videos = [
   { src: '', poster: '/img/portfolio-20.jpg', name: 'Client compilation', role: 'A mix of past clients' },
@@ -57,7 +59,7 @@ const quotes = [
             </video>
           ) : (
             <div class="vt__media vt__ph">
-              <img src={v.poster} alt="" loading="lazy" decoding="async" />
+              <Image src={getLocalImage(v.poster)} alt="" widths={[280, 560]} sizes="(max-width: 820px) 50vw, 300px" format="webp" quality={72} loading="lazy" decoding="async" />
               <span class="vt__play" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </span>
@@ -78,7 +80,7 @@ const quotes = [
         <figure class="qt reveal">
           <blockquote class="qt__quote">{q.quote}</blockquote>
           <figcaption class="qt__cap">
-            <img class="qt__avatar" src={q.headshot} alt={`${q.name} headshot`} width="56" height="56" loading="lazy" decoding="async" />
+            <Image class="qt__avatar" src={getLocalImage(q.headshot)} alt={`${q.name} headshot`} widths={[56, 112]} sizes="56px" format="webp" quality={72} loading="lazy" decoding="async" />
             <span class="qt__who">
               <strong>{q.name}</strong>
               <em>{q.role}</em>
