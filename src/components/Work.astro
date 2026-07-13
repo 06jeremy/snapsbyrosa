@@ -1,0 +1,172 @@
+---
+// Work — editorial / brutalist. Big cinematic 2:1 frames stacked vertically,
+// alternating left/right for a zigzag rhythm. Title sits bottom-corner over the
+// image; on hover a red "wipe" slides smoothly across and
+// reveals a "View <project> work" CTA. Each frame links to its own gallery page
+// at /work/<slug>. Data (incl. placeholder images) lives in ../data/work.js.
+import { works } from '../data/work.js';
+---
+<section class="work section" id="work">
+  <div class="container">
+    <header class="work__head">
+      <h2 class="work__title condensed reveal">Content that connects,<br />performs, and moves people</h2>
+      <div class="work__meta">
+        <span class="work__label reveal">The Work</span>
+        <!-- TODO(real-content): switch to "( Selected · 20XX–XX )" once real dated projects exist. -->
+        <span class="work__count reveal">( What I shoot )</span>
+      </div>
+    </header>
+    <hr class="work__rule reveal" />
+
+    <div class="work__list">
+      {works.map((w, i) => (
+        <article class="wk reveal" data-work-card>
+          <a class="wk__link" href={`/work/${w.slug}`} aria-label={`View the ${w.title} work`}>
+            <span class="wk__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <figure class="wk__media">
+              <img
+                src={w.cover}
+                alt={`${w.title} — ${w.cat}, by SNAPSBYROSA`}
+                width="1600"
+                height="800"
+                loading="lazy"
+              />
+              <span class="wk__wipe" aria-hidden="true"></span>
+              <figcaption class="wk__cap">
+                <span class="wk__cat">{w.cat}</span>
+                <h3 class="wk__name condensed">{w.title}</h3>
+                <span class="wk__cta">
+                  View {w.title} work
+                  <span class="wk__arrow" aria-hidden="true">→</span>
+                </span>
+              </figcaption>
+            </figure>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .work {
+    background: var(--dark-bg);
+    color: var(--dark-fg);
+    border-radius: 24px 24px 0 0;
+    margin-top: 2rem;
+  }
+  .work__head {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end;
+    gap: 1.5rem;
+  }
+  .work__title { font-size: clamp(1.9rem, 5.2vw, 4.4rem); max-width: 16ch; }
+  .work__meta { display: flex; flex-direction: column; align-items: flex-end; text-align: right; gap: 0.3rem; }
+  .work__label { font-size: 0.8rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; color: var(--red); }
+  .work__count { font-size: 0.85rem; color: var(--dark-muted); }
+  .work__rule { height: 1px; background: var(--dark-line); border: 0; margin-block: clamp(1.5rem, 3vw, 2.5rem); }
+
+  /* Stacked editorial list */
+  .work__list { display: flex; flex-direction: column; gap: clamp(2.5rem, 6vw, 5rem); }
+
+  .wk { position: relative; }
+  .wk__link {
+    position: relative; display: block;
+    width: 88%;                 /* leaves room for the zigzag offset */
+    margin-right: auto;         /* odd → hug the left */
+  }
+  .wk:nth-child(even) .wk__link { margin-right: 0; margin-left: auto; } /* even → hug the right */
+  .wk__link:focus-visible { outline: 2px solid var(--red); outline-offset: 6px; }
+
+  /* Big index number, diagonally opposite the caption */
+  .wk__num {
+    position: absolute; top: 0; right: 0; z-index: 4;
+    padding: clamp(0.9rem, 2.4vw, 1.6rem);
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(0.95rem, 1.8vw, 1.35rem);
+    letter-spacing: 0.12em; color: rgba(255, 255, 255, 0.72);
+    mix-blend-mode: difference; /* stays legible over any frame */
+  }
+  .wk:nth-child(even) .wk__num { right: auto; left: 0; }
+
+  .wk__media {
+    position: relative; overflow: hidden;
+    aspect-ratio: 2 / 1;         /* cinematic */
+    background: #100d0a;
+  }
+  .wk__media img {
+    width: 100%; height: 100%; object-fit: cover;
+    transform: scale(1.02);
+    filter: saturate(0.9) brightness(0.9);
+    transition: transform 1s var(--ease), filter 0.6s var(--ease);
+    will-change: transform;
+  }
+  .wk__link:hover img,
+  .wk__link:focus-visible img { transform: scale(1.06); filter: saturate(1) brightness(0.98); }
+
+  /* Bottom scrim so the title stays readable over bright frames */
+  .wk__media::after {
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(to top, rgba(10, 8, 6, 0.66) 0%, rgba(10, 8, 6, 0.12) 42%, rgba(10, 8, 6, 0) 68%);
+  }
+
+  /* Red wipe — multiply so the photo goes duotone-red rather than being hidden */
+  .wk__wipe {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: var(--red);
+    mix-blend-mode: multiply;
+    transform: translateX(-101%);            /* off to the left (odd) */
+    transition: transform 0.5s var(--ease);  /* smooth slide-out on leave */
+  }
+  .wk:nth-child(even) .wk__wipe { transform: translateX(101%); } /* off to the right (even) */
+
+  /* Smooth wipe: slides fully across on hover, slides back out on leave.
+     Both odd and even rest at translateX(0); the transition on .wk__wipe
+     handles both directions in one clean motion (no stutter). */
+  .wk__link:hover .wk__wipe,
+  .wk__link:focus-visible .wk__wipe { transform: translateX(0); }
+
+  /* Caption — bottom-left (odd) / bottom-right (even), over the wipe */
+  .wk__cap {
+    position: absolute; left: 0; bottom: 0; z-index: 3;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem;
+    padding: clamp(1rem, 3.2vw, 2.1rem);
+    max-width: min(90%, 46ch);
+  }
+  .wk:nth-child(even) .wk__cap { left: auto; right: 0; align-items: flex-end; text-align: right; }
+  .wk__cat {
+    font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+    font-weight: 600; color: rgba(255, 255, 255, 0.82);
+  }
+  .wk__name { font-size: clamp(1.5rem, 4.4vw, 3.2rem); line-height: 0.98; color: #fff; }
+  .wk__cta {
+    display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 0.35rem;
+    font-family: var(--font-sans); font-weight: 600; font-size: clamp(0.85rem, 1.4vw, 0.98rem);
+    color: #fff;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.4s var(--ease) 0.06s, transform 0.4s var(--ease) 0.06s;
+  }
+  .wk__link:hover .wk__cta,
+  .wk__link:focus-visible .wk__cta { opacity: 1; transform: none; }
+  .wk__arrow { transition: transform 0.4s var(--ease); }
+  .wk__link:hover .wk__arrow,
+  .wk__link:focus-visible .wk__arrow { transform: translateX(4px); }
+
+  /* Reduced motion: no wipe animation / no scale — just reveal the CTA calmly */
+  :global(.no-motion) .wk__media img,
+  :global(.no-motion) .wk__wipe,
+  :global(.no-motion) .wk__cta { transition: opacity 0.2s linear; }
+  :global(.no-motion) .wk__link:hover .wk__wipe,
+  :global(.no-motion) .wk__link:focus-visible .wk__wipe { animation: none; transform: translateX(0); }
+  :global(.no-motion) .wk__link:hover .wk__cta,
+  :global(.no-motion) .wk__link:focus-visible .wk__cta { transform: none; }
+
+  @media (max-width: 720px) {
+    .wk__link { width: 100%; margin: 0; }        /* full-bleed stack on mobile */
+    .wk__media { aspect-ratio: 3 / 2; }           /* a touch taller so it isn't a sliver */
+    /* keep all captions bottom-left on mobile for a consistent read */
+    .wk:nth-child(even) .wk__cap { left: 0; right: auto; align-items: flex-start; text-align: left; }
+    .wk:nth-child(even) .wk__num { left: auto; right: 0; }
+    /* touch devices have no hover — reveal the CTA + red always */
+    .wk__cta { opacity: 1; transform: none; }
+  }
+</style>

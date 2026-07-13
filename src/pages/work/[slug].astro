@@ -1,0 +1,122 @@
+---
+// Per-project gallery. Static route generated from ../../data/work.js — one page
+// per work. Shows the full frame set (uncropped) with prev/next project nav and
+// a CTA back into the enquiry flow.
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { works } from '../../data/work.js';
+
+export function getStaticPaths() {
+  return works.map((work, i) => ({
+    params: { slug: work.slug },
+    props: {
+      work,
+      prev: works[(i - 1 + works.length) % works.length],
+      next: works[(i + 1) % works.length],
+    },
+  }));
+}
+
+const { work, prev, next } = Astro.props;
+const title = `${work.title} — Work · SNAPSBYROSA`;
+const description = `${work.title}: ${work.desc}`;
+---
+<Layout title={title} description={description} path={`/work/${work.slug}/`}>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <Nav solid />
+  <main id="main" class="wp">
+    <header class="wp__head container">
+      <a class="wp__back" href="/#work"><span aria-hidden="true">←</span> All work</a>
+      <p class="wp__cat">{work.cat}</p>
+      <h1 class="wp__title condensed">{work.title}</h1>
+      <p class="wp__desc">{work.desc}</p>
+    </header>
+
+    <div class="wp__gallery container">
+      {work.gallery.map((src, i) => (
+        <figure class="wp__frame">
+          <img
+            src={src}
+            alt={`${work.title} — frame ${i + 1} of ${work.gallery.length}, by SNAPSBYROSA`}
+            loading={i === 0 ? 'eager' : 'lazy'}
+          />
+        </figure>
+      ))}
+    </div>
+
+    <nav class="wp__pager container" aria-label="More work">
+      <a class="wp__pager-link wp__pager-link--prev" href={`/work/${prev.slug}`}>
+        <span class="wp__pager-k">Previous</span>
+        <span class="wp__pager-name condensed">{prev.title}</span>
+      </a>
+      <a class="wp__pager-link wp__pager-link--next" href={`/work/${next.slug}`}>
+        <span class="wp__pager-k">Next</span>
+        <span class="wp__pager-name condensed">{next.title}</span>
+      </a>
+    </nav>
+
+    <section class="wp__cta">
+      <div class="container wp__cta-inner">
+        <h2 class="wp__cta-title condensed">Like what you see? Let’s make yours.</h2>
+        <a class="btn btn--red" href="/#contact">Start your project</a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  // Mobile menu + progressive niceties (safe no-ops where elements are absent).
+  import '../../scripts/main.js';
+</script>
+
+<style>
+  .wp { padding-top: clamp(6rem, 12vw, 9rem); }
+
+  .wp__head { display: flex; flex-direction: column; gap: 0.6rem; }
+  .wp__back {
+    align-self: flex-start; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em;
+    color: var(--muted); display: inline-flex; gap: 0.45rem; margin-bottom: 0.6rem;
+    transition: color 0.3s var(--ease);
+  }
+  .wp__back:hover { color: var(--red); }
+  .wp__cat { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--red); }
+  .wp__title { font-size: clamp(2.4rem, 8vw, 6rem); line-height: 0.95; letter-spacing: -0.02em; }
+  .wp__desc { max-width: 52ch; color: var(--ink-soft); font-size: clamp(1rem, 1.4vw, 1.15rem); }
+
+  .wp__gallery {
+    margin-top: clamp(2.5rem, 6vw, 4.5rem);
+    display: flex; flex-direction: column; gap: clamp(1.25rem, 3vw, 2.25rem);
+  }
+  .wp__frame { overflow: hidden; border-radius: 4px; background: #100d0a; }
+  .wp__frame img { width: 100%; height: auto; display: block; }
+  /* Editorial rhythm: on wide screens let alternate frames breathe narrower + offset */
+  @media (min-width: 860px) {
+    .wp__frame:nth-child(3n + 2) { width: 72%; margin-left: auto; }
+    .wp__frame:nth-child(3n + 3) { width: 72%; margin-right: auto; }
+  }
+
+  .wp__pager {
+    margin-top: clamp(3rem, 7vw, 5rem);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    border-top: 1px solid var(--line); padding-top: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .wp__pager-link { display: flex; flex-direction: column; gap: 0.3rem; transition: color 0.3s var(--ease); }
+  .wp__pager-link--next { text-align: right; align-items: flex-end; }
+  .wp__pager-k { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+  .wp__pager-name { font-size: clamp(1.15rem, 2.4vw, 1.7rem); color: var(--ink); }
+  .wp__pager-link:hover .wp__pager-name { color: var(--red); }
+
+  .wp__cta { margin-top: clamp(3.5rem, 8vw, 6rem); background: var(--dark-bg); color: var(--dark-fg); border-radius: 24px 24px 0 0; }
+  .wp__cta-inner {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  }
+  .wp__cta-title { font-size: clamp(1.6rem, 4vw, 3rem); max-width: 18ch; }
+
+  @media (max-width: 640px) {
+    .wp__pager { grid-template-columns: 1fr; }
+    .wp__pager-link--next { text-align: left; align-items: flex-start; }
+  }
+</style>

@@ -1,0 +1,84 @@
+---
+const marquee = ['Photography', 'Personal Branding', 'Short Film', 'Reels & Social', 'Creative Direction', 'Editorial', 'Portraiture'];
+---
+<section class="statement section" id="statement">
+  <div class="container">
+    <p class="eyebrow reveal">( People connect with people )</p>
+    <h2 class="statement__lead h-lg reveal">
+      People remember <em>people and stories,</em> not logos. I make photo, film
+      and social content built around <span class="u-red">you</span>.
+    </h2>
+    <div class="statement__meta">
+      <p class="reveal muted">The Hague · Since 2024 · Working worldwide</p>
+      <a href="#work" class="btn reveal">See the work <span class="arrow">→</span></a>
+    </div>
+  </div>
+
+  <div class="marquee" data-marquee aria-hidden="true">
+    <div class="marquee__track" data-marquee-track data-marquee-speed="55" data-marquee-slow="0">
+      {[...marquee, ...marquee].map((w) => (
+        <span class="marquee__item">{w}<i class="marquee__dot">✳</i></span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .statement {
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    /* Slide up over the locked last Services card (Reels) instead of leaving a
+       dead empty scroll. Opaque bg covers the dark card; higher z-index paints
+       above it.
+
+       margin-top is tuned so this block's top edge meets the fold EXACTLY when
+       Reels locks, so it starts rising immediately — lock -> slide reads as ONE
+       continuous motion with no frozen beat. Derivation: at the lock moment this
+       block's top sits at  cardHeight + lock + pinnedTop - |margin|  down the
+       page, and we want that to equal the viewport height (the fold):
+         |margin| = cardHeight + lock - 100vh + pinnedTop
+                  = 80vh + 70vh - 100vh + pinnedTop
+                  = 50vh + pinnedTop
+       where pinnedTop = Reels' sticky offset = Services' --svc-nav + 2*--peek
+       = 4.5rem + 2*clamp(4.5rem, 8vw, 6.5rem). A plain vh value can't do this:
+       the beat is driven by pinnedTop (roughly fixed px), not by vh. The extra
+       3vh (53 not 50) keeps the block a hair on-screen so there's zero risk of a
+       1px gap. IF YOU CHANGE Services' .svc__card min-height (80vh), .svc__lock
+       (70vh), --svc-nav (4.5rem) or --peek, update this calc to match. */
+    position: relative;
+    z-index: 2;
+    background: var(--bg);
+    margin-top: calc(-53vh - 4.5rem - 2 * clamp(4.5rem, 8vw, 6.5rem));
+  }
+  .statement__lead {
+    max-width: 20ch;
+    margin-top: 1.5rem;
+    line-height: 1.06;
+  }
+  .statement__lead em { font-style: italic; }
+  .u-red { color: var(--red); }
+  .statement__meta {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 1.5rem; margin-top: 3rem;
+  }
+
+  .marquee {
+    margin-top: clamp(3rem, 7vw, 6rem);
+    border-block: 1px solid var(--line);
+    padding-block: 1.4rem;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee__track {
+    display: inline-flex; align-items: center;
+    will-change: transform;
+  }
+  .marquee__item {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    display: inline-flex; align-items: center;
+    padding-inline: 1.5rem;
+  }
+  .marquee__dot { color: var(--red); font-style: normal; font-size: 0.4em; margin-left: 2.2rem; }
+</style>

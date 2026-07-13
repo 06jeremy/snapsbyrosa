@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Statement from '../components/Statement.astro';
+import Services from '../components/Services.astro';
+import Work from '../components/Work.astro';
+import Stats from '../components/Stats.astro';
+import LogoCloud from '../components/LogoCloud.astro';
+import About from '../components/About.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+// Scaffold with clearly-labelled placeholders (no fabricated quotes). Fill the
+// `videos` + `quotes` arrays in Testimonials.astro with real, permitted content.
+import Testimonials from '../components/Testimonials.astro';
+---
+
+<Layout>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <Nav />
+  <main id="main">
+    <Hero />
+    <LogoCloud />
+    <Services />
+    <Statement />
+    <Work />
+    <Stats />
+    <About />
+    <Testimonials />
+    <Contact />
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  import '../scripts/main.js';
+</script>

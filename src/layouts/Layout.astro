@@ -1,0 +1,115 @@
+---
+import '../styles/global.css';
+import Analytics from '../components/Analytics.astro';
+const {
+  title = 'SNAPSBYROSA — Personal Brand Photographer & Videographer, The Hague',
+  description = 'Photo, film and social content for people and brands, by Jeremy Rosa. Personal-brand photography, short-form video and Instagram content for athletes, founders, milestones and companies. Based in The Hague, working worldwide.',
+  path = '/',
+} = Astro.props;
+const site = 'https://snapsbyrosa.com';
+const canonical = site + path;
+const ogImage = `${site}/img/01.jpg`;
+const ogImageAlt = 'Editorial personal-brand portrait by SNAPSBYROSA';
+
+// Structured data. Describes the studio as a service + its founder so search
+// engines and social/AI surfaces understand what SNAPSBYROSA is, who runs it,
+// where it operates, and what it offers.
+// NOTE (real-content TODO): once confirmed, add `sameAs` (real Instagram /
+// Vimeo / LinkedIn URLs), `telephone`, `priceRange`, and an `aggregateRating`
+// backed by REAL reviews. Do NOT add fabricated socials/ratings — they break
+// trust and violate structured-data guidelines.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${site}/#business`,
+  name: 'SNAPSBYROSA',
+  description,
+  url: site + '/',
+  image: ogImage,
+  email: 'info@snapsbyrosa.com',
+  telephone: '+31641592658',
+  sameAs: ['https://instagram.com/snapsbyrosa'],
+  foundingDate: '2024',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'The Hague',
+    addressRegion: 'South Holland',
+    addressCountry: 'NL',
+  },
+  areaServed: ['The Hague', 'Netherlands', 'Worldwide'],
+  founder: {
+    '@type': 'Person',
+    name: 'Jeremy Jordan Rosa',
+    jobTitle: 'Founder & Lead Creative',
+  },
+  knowsAbout: [
+    'Personal brand photography',
+    'Portrait photography',
+    'Short-form video',
+    'Social media content',
+    'Videography',
+    'Brand storytelling',
+    'Employer branding content',
+    'Corporate storytelling',
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Content services',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Photography', description: 'Editorial portraits and lifestyle imagery.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Videography', description: 'Story-led films and interviews with cinematic colour and sound.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Social content', description: 'Reels and on-brand Instagram carousels engineered to stop the scroll.' } },
+    ],
+  },
+};
+---
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="SNAPSBYROSA" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#e6e6e6" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:site_name" content="SNAPSBYROSA" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="1200" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5..125,400..800;1,62.5..125,400..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preload" as="image" href="/img/01.jpg" fetchpriority="high" />
+    <script is:inline>
+      // Progressive enhancement flag
+      document.documentElement.classList.remove('no-js');
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body>
+    <slot />
+    <Analytics />
+  </body>
+</html>

@@ -1,0 +1,317 @@
+---
+// Legal & privacy — single page covering imprint (colofon), privacy policy
+// (AVG/GDPR), cookies, and terms of use. Content is a solid, standard baseline
+// for a Dutch sole trader (eenmanszaak / ZZP). PLACEHOLDERS in [brackets] must
+// be filled with real details before launch. This is not legal advice — have a
+// professional review it if you want full certainty (see the note at the end).
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const updated = '8 July 2026';
+const title = 'Legal & privacy — SNAPSBYROSA';
+const description = 'Business details, privacy policy (GDPR/AVG), cookie information and terms of use for SNAPSBYROSA, The Hague.';
+---
+<Layout title={title} description={description} path="/legal">
+  <a href="#main" class="skip-link">Skip to content</a>
+  <Nav solid />
+  <main id="main" class="legal">
+    <div class="container legal__inner">
+      <header class="legal__head">
+        <a class="legal__back" href="/"><span aria-hidden="true">←</span> Back to site</a>
+        <h1 class="legal__title condensed">Legal &amp; privacy</h1>
+        <p class="legal__updated">Last updated: {updated}</p>
+      </header>
+
+      <nav class="legal__toc" aria-label="On this page">
+        <a href="#business">Business details</a>
+        <a href="#privacy">Privacy policy</a>
+        <a href="#cookies">Cookies</a>
+        <a href="#booking">Booking &amp; shoot terms</a>
+        <a href="#terms">Terms of use</a>
+      </nav>
+
+      <!-- 1. IMPRINT / COLOFON -->
+      <section class="legal__sec" id="business">
+        <h2>Business details</h2>
+        <p>This website is run by:</p>
+        <ul class="legal__facts">
+          <li><span>Trade name</span> SNAPSBYROSA</li>
+          <li><span>Owner</span> Jeremy Jordan Rosa</li>
+          <li><span>Based in</span> The Hague, Netherlands</li>
+          <li><span>Email</span> <a href="mailto:info@snapsbyrosa.com">info@snapsbyrosa.com</a></li>
+          <li><span>Phone</span> <a href="tel:+31641592658">+31 6 41592658</a></li>
+          <li><span>Chamber of Commerce (KvK)</span> <em>To follow — being registered</em></li>
+          <li><span>VAT (btw-id)</span> <em>To follow — being registered</em></li>
+        </ul>
+        <p class="legal__hint">
+          KvK number and btw-id are being registered and will be added here. Both are
+          required on a Dutch business site once you're registered; replace the
+          "to follow" lines with the real numbers before you start invoicing.
+        </p>
+      </section>
+
+      <!-- 2. PRIVACY POLICY -->
+      <section class="legal__sec" id="privacy">
+        <h2>Privacy policy</h2>
+        <p>
+          Your privacy matters. This explains what personal data SNAPSBYROSA
+          collects, why, and what your rights are under the GDPR (in Dutch, the AVG).
+        </p>
+
+        <h3>What I collect and why</h3>
+        <ul>
+          <li>
+            <strong>When you use the enquiry form:</strong> your project details, the
+            way you want to be contacted, and — if you choose Google Meet — your email
+            address. This is used only to reply to you and plan the work. Legal basis:
+            steps taken at your request before entering into an agreement.
+          </li>
+          <li>
+            <strong>When you message on WhatsApp:</strong> your message and phone number
+            reach me through WhatsApp. WhatsApp's own privacy terms apply to that chat.
+          </li>
+          <li>
+            <strong>Visit statistics (only if you accept cookies):</strong> if analytics
+            is switched on, anonymised data about pages viewed and rough location, so I
+            can see what's working. No advertising, no cross-site tracking. Legal basis:
+            your consent, which you can withdraw at any time.
+          </li>
+        </ul>
+
+        <h3>Who processes it</h3>
+        <p>I use a small number of trusted service providers to run this site:</p>
+        <ul>
+          <li><strong>Hosting</strong> — serves the website. [HOSTING PROVIDER]</li>
+          <li><strong>Web3Forms / email</strong> — delivers enquiry-form messages to my inbox.</li>
+          <li><strong>Google Analytics</strong> — visit statistics, only after you accept cookies.</li>
+        </ul>
+
+        <h3>How long I keep it</h3>
+        <p>
+          Enquiry and project correspondence is kept for as long as needed to do the
+          work and to meet Dutch tax record-keeping rules (invoices: 7 years). Anything
+          not needed is deleted. Analytics data is retained per Google's settings.
+        </p>
+
+        <h3>Your rights</h3>
+        <p>
+          You can ask to see, correct, or delete the personal data I hold about you, or
+          object to its use. Email <a href="mailto:info@snapsbyrosa.com">info@snapsbyrosa.com</a>
+          and I'll respond within 30 days. You can also complain to the Dutch Data
+          Protection Authority (Autoriteit Persoonsgegevens, autoriteitpersoonsgegevens.nl).
+        </p>
+      </section>
+
+      <!-- 3. COOKIES -->
+      <section class="legal__sec" id="cookies">
+        <h2>Cookies</h2>
+        <p>
+          This site does not set any tracking cookies unless you accept them. On your
+          first visit you're asked once. If you accept, Google Analytics places cookies
+          to count visits; if you decline, nothing is set. You can change your mind by
+          clearing this site's data in your browser, which brings the choice back.
+        </p>
+      </section>
+
+      <!-- 4. BOOKING & SHOOT TERMS (client policy) -->
+      <section class="legal__sec" id="booking">
+        <h2>Booking &amp; shoot terms</h2>
+        <p>
+          These are the standard terms for working together. For a specific project,
+          the exact scope, price and usage rights are set out in your quote — that quote,
+          together with these terms, is our agreement. If the two ever conflict, the quote wins.
+        </p>
+
+        <h3>Booking &amp; deposit</h3>
+        <p>
+          A date is only reserved once you've confirmed the quote in writing and paid the
+          deposit. The deposit is <strong>50% of the fee</strong> and is non-refundable — it
+          covers holding your date and turning down other work for it. The remaining 50%
+          (the balance) is due as set out below.
+        </p>
+
+        <h3>Payment</h3>
+        <ul>
+          <li><strong>How:</strong> by bank transfer or iDEAL to the details on the invoice.</li>
+          <li><strong>When:</strong> 50% deposit to confirm the booking; the remaining 50%
+            (the balance) is due <strong>before the final files are released</strong>.</li>
+          <li><strong>How delivery works:</strong> after the shoot you receive a watermarked
+            preview of the edited content. Once you've paid the balance, let me know, and I'll
+            unlock the full-resolution files as soon as I can — usually quickly, though not
+            always instantly. Payment always comes before the final files.</li>
+          <li><strong>For retainers:</strong> invoiced monthly in advance, payable within 14 days.</li>
+          <li><strong>VAT (btw):</strong> prices are exclusive of VAT unless stated otherwise;
+            VAT is added on the invoice.</li>
+        </ul>
+
+        <h3>If an invoice isn't paid</h3>
+        <p>
+          Full-resolution files are released, and the licence to use them takes effect, only
+          once the balance is paid in full — so an unpaid balance simply means the final files
+          stay locked. For any other overdue invoice (a retainer, for example), I'll send one
+          reminder with a short new deadline; if it's still not paid, statutory interest and
+          reasonable collection costs may be added, as allowed under Dutch law.
+        </p>
+
+        <h3>Cancelling or moving a shoot</h3>
+        <ul>
+          <li>The deposit is non-refundable in all cases.</li>
+          <li>Cancel <strong>more than 7 days</strong> before the shoot: nothing further is owed
+            beyond the deposit.</li>
+          <li>Cancel <strong>within 7 days</strong>: 50% of the remaining fee is due, since the
+            date can no longer be filled.</li>
+          <li>Rescheduling is fine once, free of charge, if you let me know more than 48 hours
+            ahead and we find a new date within 3 months.</li>
+          <li>Outdoor shoots may be moved for bad weather at no cost, by agreement.</li>
+          <li>If I ever have to cancel (illness, emergency), you get a full refund including the
+            deposit, or a new date — your choice.</li>
+        </ul>
+
+        <h3>Copyright &amp; how you can use the content</h3>
+        <p>
+          Under Dutch copyright law (Auteurswet) I hold the copyright to everything I shoot and
+          edit, and I keep it. On full payment you receive a <strong>licence to use the delivered
+          content</strong> for the purpose agreed in your quote — for example your website, social
+          media and personal or company promotion. Anything beyond that (reselling the images,
+          licensing them on, or use by a third party) needs my written agreement first.
+        </p>
+
+        <h3>Credit &amp; tagging</h3>
+        <p>
+          When you post the content on social media, please credit <strong>@snapsbyrosa</strong>
+          in one of these ways:
+        </p>
+        <ul>
+          <li>a credit in the caption or description — for example
+            "shot by @snapsbyrosa", "photos by @snapsbyrosa", or just "@snapsbyrosa"; or</li>
+          <li>tag @snapsbyrosa directly in the first photo or video of the post.</li>
+        </ul>
+        <p>
+          As the maker I have the right to be named (persoonlijkheidsrecht, Auteurswet art. 25).
+          You don't need to add a credit on your own website unless we agreed to it.
+        </p>
+
+        <h3>Me showing the work</h3>
+        <p>
+          I'd like to show the content in my portfolio and on my own social media as an example
+          of my work. If a shoot is private or sensitive and you'd rather I didn't, just tell me
+          in writing and I'll keep it off — no problem.
+        </p>
+
+        <h3>People in the picture (portretrecht)</h3>
+        <p>
+          By booking, you confirm you're happy to be photographed and filmed and for the content
+          to be used as agreed. If other identifiable people appear in the shoot, it's your
+          responsibility to make sure they agree to be photographed and shown too.
+        </p>
+
+        <h3>Delivery, edits &amp; RAW files</h3>
+        <ul>
+          <li>Turnaround and the number of final images/edits are agreed per project and stated
+            in your quote — it depends on the scope of the shoot.</li>
+          <li><strong>Rush delivery</strong> (faster than the agreed turnaround) is available on
+            request for an additional fee, quoted before the shoot.</li>
+          <li>Editing and image selection are done in my own style, at my discretion. One round
+            of minor tweaks is included; larger changes are quoted separately.</li>
+          <li><strong>RAW (unedited) files are not delivered.</strong> You receive the finished,
+            edited files only.</li>
+        </ul>
+
+        <h3>Storing your content</h3>
+        <p>
+          I keep a backup of your delivered files for <strong>up to 3 months</strong> after
+          delivery, so I can re-send them if you lose them. After that I'm not obliged to keep
+          them, so please save your own copy. You can ask me to delete your files sooner at any
+          time. Invoices are kept for 7 years to meet Dutch tax rules (see the privacy policy).
+        </p>
+
+        <h3>Liability</h3>
+        <p>
+          I take good care of your shoot and use backup equipment. In the rare event something
+          goes wrong beyond my control (equipment failure, illness, data loss, force majeure),
+          my liability is limited to the fee paid for that shoot. I'm not liable for indirect
+          losses.
+        </p>
+      </section>
+
+      <!-- 5. TERMS OF USE -->
+      <section class="legal__sec" id="terms">
+        <h2>Terms of use</h2>
+        <p>
+          All photography, video and design on this site is created by and belongs to
+          SNAPSBYROSA (© {new Date().getFullYear()} Jeremy Jordan Rosa). You may not copy,
+          reuse, or republish it without written permission.
+        </p>
+        <p>
+          The site is provided as it is, and its content is for general information. It's
+          not advice you should rely on for decisions without checking with me first.
+          Terms for a specific project (scope, usage rights, payment) are agreed
+          separately in a quote or contract before work begins.
+        </p>
+        <p>Dutch law applies to this website and any dispute is subject to the Dutch courts.</p>
+      </section>
+
+      <p class="legal__disclaimer">
+        Note: this page is a clear, standard baseline — not formal legal advice. For a
+        registered business it's worth having it, plus your project terms (algemene
+        voorwaarden), checked once by a professional. The bracketed items above must be
+        completed with your real details.
+      </p>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  import '../scripts/main.js';
+</script>
+
+<style>
+  .legal { padding-top: clamp(6rem, 12vw, 9rem); padding-bottom: clamp(3rem, 7vw, 5rem); }
+  .legal__inner { max-width: 760px; }
+
+  .legal__head { margin-bottom: clamp(2rem, 5vw, 3rem); }
+  .legal__back {
+    display: inline-flex; gap: 0.45rem; font-size: 0.85rem; font-weight: 600;
+    color: var(--muted); margin-bottom: 1rem; transition: color 0.3s var(--ease);
+  }
+  .legal__back:hover { color: var(--red); }
+  .legal__title { font-size: clamp(2.2rem, 7vw, 4.5rem); line-height: 0.95; }
+  .legal__updated { color: var(--muted); font-size: 0.9rem; margin-top: 0.6rem; }
+
+  .legal__toc {
+    display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;
+    border-block: 1px solid var(--line); padding-block: 1rem;
+    margin-bottom: clamp(2rem, 5vw, 3rem); font-size: 0.9rem; font-weight: 600;
+  }
+  .legal__toc a:hover { color: var(--red); }
+
+  .legal__sec { margin-bottom: clamp(2.5rem, 6vw, 4rem); }
+  .legal__sec h2 {
+    font-family: var(--font-display); font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    letter-spacing: -0.02em; margin-bottom: 1rem; scroll-margin-top: 6rem;
+  }
+  .legal__sec h3 {
+    font-size: 1.05rem; font-weight: 700; margin: 1.75rem 0 0.6rem;
+  }
+  .legal__sec p { color: var(--ink-soft); line-height: 1.65; margin-bottom: 1rem; max-width: 68ch; }
+  .legal__sec ul { margin: 0 0 1rem 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; }
+  .legal__sec li { color: var(--ink-soft); line-height: 1.6; }
+  .legal__sec a { color: var(--red); text-decoration: underline; text-underline-offset: 3px; }
+
+  .legal__facts { list-style: none; padding-left: 0; }
+  .legal__facts li { display: flex; flex-wrap: wrap; gap: 0.5rem; border-top: 1px solid var(--line); padding-top: 0.6rem; }
+  .legal__facts span { min-width: 200px; font-weight: 600; color: var(--ink); }
+
+  .legal__hint, .legal__disclaimer {
+    font-size: 0.9rem; color: var(--muted); background: var(--paper);
+    border-left: 3px solid var(--red); padding: 0.9rem 1.1rem; border-radius: 4px;
+    line-height: 1.6; max-width: none;
+  }
+  .legal__disclaimer { margin-top: 2rem; }
+
+  @media (max-width: 520px) {
+    .legal__facts span { min-width: 0; width: 100%; }
+  }
+</style>

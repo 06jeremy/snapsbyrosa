@@ -1,0 +1,178 @@
+---
+// Sticky-stacked services. Each card is a full-bleed editorial image, darkened
+// with a subtle brand-red tint so the cream text pops. As you scroll, each card
+// pins under the nav and the next slides up over it — leaving every service's
+// number + title header stacked and visible (oddlymade-style).
+//
+// NOTE: "Included" bullets can be edited freely.
+const services = [
+  {
+    n: '01',
+    title: 'Photography',
+    blurb: 'Editorial portraits and lifestyle photos that actually look like you.',
+    included: ['Personal & brand portraits', 'Headshots', 'Lifestyle & on-location sets', 'Full retouch & gallery'],
+    img: '/img/11.jpg', w: 1199, h: 1600,
+  },
+  {
+    n: '02',
+    title: 'Videography',
+    blurb: 'Short films and interviews — shot, coloured and cut so your story comes across.',
+    included: ['Brand & story films', 'Interviews', 'On-location capture', 'Colour grade & sound'],
+    img: '/img/05.jpg', w: 1201, h: 1600,
+  },
+  {
+    n: '03',
+    title: 'Social content',
+    blurb: 'Reels and carousels made for the feed — on brand and ready to post.',
+    included: ['Reels & short-form edits', 'Instagram carousels', 'Hooks & pacing', 'Posting-ready exports'],
+    img: '/img/08.jpg', w: 1200, h: 1600,
+  },
+];
+---
+<section class="svc" id="services">
+  <div class="container svc__head">
+    <p class="eyebrow reveal">( Story-led content )</p>
+    <h2 class="h-xl reveal">Services</h2>
+  </div>
+
+  <div class="svc__stack">
+    {services.map((s, i) => (
+      <article class="svc__card" style={`--i:${i}`}>
+        <div class="svc__bg">
+          <img src={s.img} alt="" width={s.w} height={s.h} loading="lazy" aria-hidden="true" />
+        </div>
+        <div class="svc__inner container">
+          <div class="svc__head-row">
+            <span class="svc__n">{s.n}</span>
+            <h3 class="svc__title">{s.title}</h3>
+          </div>
+          <div class="svc__body">
+            <div class="svc__intro">
+              <p class="svc__lead">{s.blurb}</p>
+              <a href="#contact" class="btn btn--red svc__cta">Enquire <span class="arrow">→</span></a>
+            </div>
+            <div class="svc__incl">
+              <p class="svc__label">Included</p>
+              <ul class="svc__list">
+                {s.included.map((t) => <li>{t}</li>)}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+    ))}
+    <!-- static spacer: gives the LAST card scroll room to stay pinned (lock)
+         before it releases into the next section -->
+    <div class="svc__lock" aria-hidden="true"></div>
+  </div>
+</section>
+
+<style>
+  .svc {
+    /* space reserved below the fixed nav so pinned headers clear it */
+    --svc-nav: 4.5rem;
+    /* height of the header strip that stays visible when a card is covered */
+    --peek: clamp(4.5rem, 8vw, 6.5rem);
+    padding-top: clamp(4rem, 9vw, 8rem);
+    /* No bottom padding: the next section slides up over the locked last card
+       (see .svc__lock + Statement's negative margin-top), so a gap here would
+       break the overlap. */
+    padding-bottom: 0;
+  }
+  .svc__head { margin-bottom: clamp(2rem, 5vw, 4rem); }
+  .svc__head h2 { margin-top: 0.5rem; }
+
+  .svc__stack { position: relative; }
+
+  .svc__card {
+    position: sticky;
+    top: calc(var(--svc-nav) + var(--i) * var(--peek));
+    min-height: 80vh;
+    overflow: hidden;
+    background: var(--ink);
+    display: flex;
+  }
+  /* Scroll room after the last card so it stays pinned (locks) for a beat.
+     It sits behind the sticky card (static, not positioned), so Reels stays
+     fully visible while locked. The NEXT section (Statement) is pulled up over
+     this same region with a matching negative margin-top, so instead of an
+     empty dead-scroll the "who we are" block slides up on top of the locked
+     Reels card, then normal scroll continues. This height sets how long Reels
+     stays pinned (the lock window). Statement.astro's margin-top is derived from
+     this value + the card min-height (80vh) + Reels' pinnedTop so the incoming
+     block meets the fold exactly when Reels locks (one continuous motion). IF YOU
+     CHANGE THIS 70vh, or .svc__card min-height, or --svc-nav/--peek, update the
+     margin-top calc in Statement.astro to match (see the note there). */
+  .svc__lock { height: 70vh; }
+
+  /* full-bleed image + red tint + darkening scrim so text always pops */
+  .svc__bg { position: absolute; inset: 0; z-index: 0; }
+  .svc__bg img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+  .svc__bg::before {
+    content: ""; position: absolute; inset: 0;
+    background: var(--red); mix-blend-mode: multiply; opacity: 0.28;
+  }
+  .svc__bg::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, rgba(12,8,6,0.88) 0%, rgba(12,8,6,0.6) 42%, rgba(12,8,6,0.22) 100%),
+      linear-gradient(0deg, rgba(12,8,6,0.55) 0%, rgba(12,8,6,0) 45%);
+  }
+
+  .svc__inner {
+    position: relative; z-index: 1;
+    width: 100%;
+    display: flex; flex-direction: column;
+    color: #fff;
+  }
+
+  /* the strip that stays visible in the stack */
+  .svc__head-row {
+    height: var(--peek);
+    display: flex; align-items: center;
+    gap: clamp(1rem, 3vw, 2.75rem);
+  }
+  .svc__n {
+    font-family: var(--font-sans); font-weight: 700;
+    font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+    letter-spacing: 0.04em; color: #ff6a4d; flex-shrink: 0;
+  }
+  .svc__title {
+    font-family: var(--font-display); color: #fff; font-weight: 700;
+    font-size: clamp(2.1rem, 6vw, 4.75rem); line-height: 0.98; letter-spacing: -0.03em;
+  }
+
+  .svc__body {
+    display: grid; grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(1.75rem, 5vw, 4.5rem);
+    align-items: start;
+    padding-top: clamp(1.25rem, 3vw, 2.5rem);
+    padding-bottom: clamp(2rem, 5vw, 4rem);
+    max-width: 1080px;
+  }
+  .svc__lead {
+    font-size: clamp(1.05rem, 1.8vw, 1.4rem); line-height: 1.5;
+    color: rgba(255,255,255,0.92); max-width: 42ch; margin: 0;
+  }
+  .svc__cta { margin-top: 1.6rem; }
+
+  .svc__label {
+    text-transform: uppercase; letter-spacing: 0.16em; font-weight: 700;
+    font-size: 0.72rem; color: #ff6a4d; margin: 0 0 1rem;
+  }
+  .svc__list { list-style: none; display: grid; gap: 0.55rem; }
+  .svc__list li {
+    font-size: clamp(0.98rem, 1.3vw, 1.1rem); color: rgba(255,255,255,0.88);
+    border-top: 1px solid rgba(255,255,255,0.16); padding-top: 0.55rem;
+  }
+
+  @media (max-width: 860px) {
+    .svc__card { min-height: 78vh; }
+    .svc__body { grid-template-columns: 1fr; gap: 1.5rem; max-width: none; }
+    .svc__bg::after {
+      background:
+        linear-gradient(90deg, rgba(12,8,6,0.82) 0%, rgba(12,8,6,0.55) 60%, rgba(12,8,6,0.35) 100%),
+        linear-gradient(0deg, rgba(12,8,6,0.6) 0%, rgba(12,8,6,0) 50%);
+    }
+  }
+</style>

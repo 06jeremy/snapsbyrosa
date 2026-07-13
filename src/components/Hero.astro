@@ -1,0 +1,140 @@
+---
+// Full-bleed cinematic hero — canonical SNAPSBYROSA wordmark, side-to-side
+const letters = 'SNAPSBYROSA'.split('');
+---
+<section class="hero" id="top" data-hero>
+  <div class="hero__media">
+    <img
+      src="/img/01.jpg"
+      alt="Black-and-white editorial portrait by SNAPSBYROSA"
+      width="1600"
+      height="1200"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="hero__scrim"></div>
+    <div class="hero__grain" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero__top container">
+    <a href="#contact" class="hero__pill">Contact</a>
+    <p class="hero__tag" data-hero-tag>
+      Photo, film &amp; social content<br />for people &amp; <em>brands</em>.
+    </p>
+  </div>
+
+  <div class="hero__wordmark container">
+    <h1 class="hero__title wordmark" aria-label="SNAPSBYROSA">
+      <span class="wordmark__inner" aria-hidden="true">
+        {letters.map((ch) => (
+          <span class="mask"><span data-word>{ch}</span></span>
+        ))}
+        <span class="mask wordmark__reg-mask"><span class="wordmark__reg" data-word>®</span></span>
+      </span>
+    </h1>
+  </div>
+
+  <a href="#statement" class="hero__scroll" aria-label="Scroll to content">
+    <span>Scroll</span>
+    <svg width="14" height="26" viewBox="0 0 14 26" fill="none" aria-hidden="true">
+      <path d="M7 1v24M7 25l6-6M7 25l-6-6" stroke="currentColor" stroke-width="1.4" />
+    </svg>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    padding-bottom: clamp(1.25rem, 3vw, 2.75rem);
+  }
+  .hero__media { position: absolute; inset: 0; z-index: -2; }
+  .hero__media img {
+    width: 100%; height: 100%; object-fit: cover;
+    object-position: center 30%;
+    transform: scale(1.08);
+    will-change: transform;
+  }
+  /* Deeper gradient at the base so the red wordmark always reads */
+  .hero__scrim {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(15,12,9,0.42) 0%, rgba(15,12,9,0.08) 26%, rgba(15,12,9,0.20) 62%, rgba(15,12,9,0.72) 100%);
+  }
+  .hero__grain {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.45; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  .hero__top {
+    position: absolute; top: clamp(5.5rem, 12vh, 8rem); left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem;
+    z-index: 2;
+  }
+  .hero__pill {
+    font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600;
+    color: #fff; border: 1.5px solid rgba(255,255,255,0.6);
+    padding: 0.4rem 0.9rem; border-radius: var(--radius-pill);
+    background: rgba(23,19,15,0.18);
+    backdrop-filter: blur(4px);
+    transition: background 0.4s var(--ease), color 0.4s var(--ease), border-color 0.4s var(--ease);
+  }
+  .hero__pill:hover { background: var(--red); border-color: var(--red); color: #fff; }
+  .hero__tag {
+    text-align: right; max-width: 22ch; margin-left: auto;
+    font-size: clamp(0.95rem, 1.5vw, 1.2rem); line-height: 1.4; font-weight: 500;
+    color: #fff; text-shadow: 0 1px 20px rgba(0,0,0,0.45);
+  }
+  .hero__tag em { font-family: var(--font-display); font-style: italic; color: #ff6a4d; }
+
+  /* --- Canonical wordmark, one line, side-to-side --- */
+  .hero__wordmark { position: relative; z-index: 2; container-type: inline-size; }
+  .hero__title {
+    color: var(--red);
+    line-height: 0.8;
+    filter: drop-shadow(0 8px 44px rgba(160,39,22,0.28));
+  }
+  .wordmark__inner {
+    display: block;
+    white-space: nowrap;
+    /* Sized in container-query units (relative to .hero__wordmark's width), so the
+       lockup always spans its container edge-to-edge and can NEVER overflow —
+       independent of viewport width, browser zoom, or panel size. */
+    font-size: 12.2cqw;
+    letter-spacing: -0.045em;
+    line-height: 0.8;
+  }
+  .hero__title .mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+  }
+  .hero__title .mask span { display: block; }
+  .wordmark__reg {
+    display: inline-block;
+    font-size: 0.24em;
+    vertical-align: top;
+    margin-top: 0.35em;
+    letter-spacing: 0;
+  }
+
+  .hero__scroll {
+    position: absolute; right: var(--gutter); bottom: clamp(1.25rem, 3vw, 2.75rem);
+    display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
+    color: #fff; z-index: 2;
+  }
+  .hero__scroll svg { animation: bob 2s var(--ease-in-out) infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+  @media (max-width: 820px) {
+    .hero__top { top: 4.75rem; }
+    .hero__scroll { display: none; }
+    /* On phones the tag sits above the wordmark for a composed, not-shrunk layout */
+    .hero__tag { font-size: 1rem; }
+  }
+</style>
