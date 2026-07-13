@@ -40,6 +40,7 @@ const description = `${work.title}: ${work.desc}`;
             src={src}
             alt={`${work.title} — frame ${i + 1} of ${work.gallery.length}, by SNAPSBYROSA`}
             loading={i === 0 ? 'eager' : 'lazy'}
+            decoding="async"
           />
         </figure>
       ))}

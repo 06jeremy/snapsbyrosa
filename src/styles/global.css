@@ -167,7 +167,13 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.
 .btn:hover .arrow { transform: translateX(4px); }
 
 /* ---------- Motion primitives ---------- */
-.reveal { opacity: 0; transform: translateY(28px); will-change: transform, opacity; }
+/* No permanent `will-change` here: there are ~40 `.reveal` elements on the page
+   and a standing `will-change` promotes every one to its own compositor layer for
+   the whole page lifetime — even long after each has finished revealing. That's a
+   lot of always-on layers competing for the compositor and eats into the scroll
+   frame budget. The reveal tween is a one-shot (`once: true`); GSAP handles any
+   short-lived promotion during the animation itself, so a standing hint is pure cost. */
+.reveal { opacity: 0; transform: translateY(28px); }
 .reveal.is-in { opacity: 1; transform: none; }
 .clip-reveal { clip-path: inset(0 0 100% 0); }
 .clip-reveal.is-in { clip-path: inset(0 0 0% 0); }

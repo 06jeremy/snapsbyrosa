@@ -39,7 +39,7 @@ const services = [
     {services.map((s, i) => (
       <article class="svc__card" style={`--i:${i}`}>
         <div class="svc__bg">
-          <img src={s.img} alt="" width={s.w} height={s.h} loading="lazy" aria-hidden="true" />
+          <img src={s.img} alt="" width={s.w} height={s.h} loading="lazy" decoding="async" aria-hidden="true" />
         </div>
         <div class="svc__inner container">
           <div class="svc__head-row">

@@ -197,6 +197,8 @@ function initMarquee() {
       viewport.addEventListener('mouseleave', () => { speed = base; });
     }
 
+    let running = false;
+    let rafId = 0;
     const frame = (now) => {
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
@@ -204,9 +206,21 @@ function initMarquee() {
       const half = el.scrollWidth / 2; // content is doubled, so one full set = half
       if (half > 0 && offset >= half) offset -= half;
       el.style.transform = `translateX(${-offset}px)`;
-      requestAnimationFrame(frame);
+      rafId = requestAnimationFrame(frame);
     };
-    requestAnimationFrame(frame);
+
+    // Only animate while the marquee is actually on screen. Previously the rAF
+    // loop ran for the whole page lifetime, so both marquees kept forcing style
+    // recalcs/compositing even when scrolled far away — wasted work that eats
+    // into the scroll frame budget. An IntersectionObserver starts/stops the
+    // loop as the strip enters/leaves the viewport (no visual change).
+    const start = () => { if (!running) { running = true; last = performance.now(); rafId = requestAnimationFrame(frame); } };
+    const stop = () => { running = false; cancelAnimationFrame(rafId); };
+    const io = new IntersectionObserver(
+      (entries) => { entries[0].isIntersecting ? start() : stop(); },
+      { rootMargin: '120px' }
+    );
+    io.observe(viewport || el);
   });
 }
 

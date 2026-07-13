@@ -57,7 +57,7 @@ const quotes = [
             </video>
           ) : (
             <div class="vt__media vt__ph">
-              <img src={v.poster} alt="" loading="lazy" />
+              <img src={v.poster} alt="" loading="lazy" decoding="async" />
               <span class="vt__play" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </span>
@@ -78,7 +78,7 @@ const quotes = [
         <figure class="qt reveal">
           <blockquote class="qt__quote">{q.quote}</blockquote>
           <figcaption class="qt__cap">
-            <img class="qt__avatar" src={q.headshot} alt={`${q.name} headshot`} width="56" height="56" loading="lazy" />
+            <img class="qt__avatar" src={q.headshot} alt={`${q.name} headshot`} width="56" height="56" loading="lazy" decoding="async" />
             <span class="qt__who">
               <strong>{q.name}</strong>
               <em>{q.role}</em>
