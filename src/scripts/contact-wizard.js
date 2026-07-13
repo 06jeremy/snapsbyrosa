@@ -92,7 +92,11 @@ function initWizard() {
     nextBtn.hidden = !needsButton;
 
     const q = steps[idx].querySelector('[data-q]');
-    if (q) q.focus();
+    // preventScroll is essential: render() runs once on load, and a plain
+    // .focus() on this heading makes the browser scroll the wizard into view —
+    // yanking the whole page down to the contact section instead of opening on
+    // the hero. Focus still moves for screen readers on step changes.
+    if (q) q.focus({ preventScroll: true });
   }
 
   // --- per-step validation ------------------------------------
@@ -307,7 +311,7 @@ function initWizard() {
       if (to) to.textContent = state.email;
     }
     const h = donePanel.querySelector('[data-q]');
-    if (h) h.focus();
+    if (h) h.focus({ preventScroll: true });
   }
 
   // --- events --------------------------------------------------

@@ -59,8 +59,11 @@ function initHero() {
     tl.to(words, { yPercent: 0, duration: 1.1, ease: 'expo.out', stagger: 0.09 })
       .to(tag, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '-=0.6');
 
-    // parallax on the background image
-    if (img) {
+    // Parallax on the background image — DESKTOP ONLY. On touch devices a
+    // scrub-linked transform repaints this full-bleed image on every
+    // momentum-scroll frame, which reads as jitter/stutter on phones. Coarse
+    // pointers keep the static CSS scale(1.08) instead.
+    if (img && finePointer) {
       gsap.to(img, {
         yPercent: 12,
         scale: 1.14,
@@ -203,6 +206,14 @@ function initMarquee() {
    Boot
 --------------------------------------------------------------- */
 function boot() {
+  // Manual restoration is set even earlier in the Layout <head>; re-assert and
+  // force the top here unless the URL deep-links to a #section. `behavior:
+  // 'instant'` is required because global `scroll-behavior: smooth` would
+  // otherwise animate this jump (which itself looks like the page scrolling on
+  // its own). Hash links (#work, #contact, …) scroll to their section normally.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (!location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
   initReveals();
   initHero();
   initNav();

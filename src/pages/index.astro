@@ -136,6 +136,9 @@ const instagram = 'https://instagram.com/snapsbyrosa';
         background: rgba(23,19,15,0.55); backdrop-filter: blur(3px);
         display: flex; align-items: center; justify-content: center; padding: 1.5rem;
       }
+      /* Without this the `display:flex` above beats the browser's built-in
+         [hidden]{display:none}, so the dialog would show on load. Keep it. */
+      .cs__overlay[hidden] { display: none; }
       .cs__dialog {
         position: relative; background: var(--paper); color: var(--ink);
         border: 1px solid var(--line); border-radius: var(--radius);

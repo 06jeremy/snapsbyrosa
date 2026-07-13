@@ -81,6 +81,12 @@ const jsonLd = {
           window.location.replace('/');
         }
       } catch (e) {}
+      // Open at the top of the page. Set manual scroll restoration HERE (head,
+      // before the browser restores the previous position and before the pinned
+      // ScrollTrigger stack initialises) so the site always begins on the
+      // homepage hero rather than dropping you partway down after login/reload.
+      // Deep links (#work, #contact, …) still scroll to their section normally.
+      try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
     </script>
     <title>{title}</title>
     <meta name="description" content={description} />
