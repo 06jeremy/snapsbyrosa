@@ -1,95 +1,47 @@
 ---
-// Standalone "coming soon" holding page — this is the PUBLIC landing page.
-// The full site lives at /home/. Password gate removed for now that the site
-// is opening up to the public — see git history if it needs to come back.
-import '../styles/global.css';
-const title = 'SNAPSBYROSA — coming soon';
-const description = 'SNAPSBYROSA — website under construction. Personal-brand photo, film and social content by Jeremy Rosa, The Hague.';
-const pixieset = 'https://snapsbyrosa.mypixieset.com';
-const instagram = 'https://instagram.com/snapsbyrosa';
-const letters = 'SNAPSBYROSA'.split('');
+// Public landing page — same as /home/, both currently gated to the
+// UnderConstruction placeholder by Layout.astro (everything except /legal
+// is). Previously this was a separate standalone "coming soon" page with
+// its own minimal markup; merged into the same Layout-based route as
+// /home/ so Google (which indexes and links to the bare root) and anyone
+// visiting /home/ directly see the identical, fuller placeholder instead of
+// two different-looking pages.
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Statement from '../components/Statement.astro';
+import Services from '../components/Services.astro';
+import Work from '../components/Work.astro';
+import Stats from '../components/Stats.astro';
+import LogoCloud from '../components/LogoCloud.astro';
+import About from '../components/About.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+// Hidden until real client quotes exist — Testimonials.astro is still full of
+// placeholders ("Client name", "Their words go here..."). Fill the `videos` +
+// `quotes` arrays with real, permitted content, then restore the import below
+// and the <Testimonials /> tag in the page.
+// import Testimonials from '../components/Testimonials.astro';
+import VideoLightbox from '../components/VideoLightbox.astro';
 ---
-<!doctype html>
-<html lang="en" class="no-js">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <meta name="theme-color" content="#e6e6e6" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5..125,400..800;1,62.5..125,400..800&display=swap"
-      rel="stylesheet"
-    />
-    <script is:inline>
-      document.documentElement.classList.remove('no-js');
-      document.documentElement.classList.add('js');
-    </script>
-  </head>
-  <body class="cs">
-    <main class="cs__main" data-hero>
-      <h1 class="cs__mark hero__title" aria-label="SNAPSBYROSA">
-        <span class="wordmark__inner" aria-hidden="true">
-          {letters.map((ch) => (
-            <span class="mask"><span data-word>{ch}</span></span>
-          ))}
-        </span>
-      </h1>
-      <p class="cs__sub" data-hero-tag>
-        Website under construction — for now head to
-        <a href={pixieset} class="cs__link">snapsbyrosa.mypixieset.com</a>
-      </p>
-      <a href={instagram} class="cs__ig" target="_blank" rel="noopener" aria-label="SNAPSBYROSA on Instagram">
-        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false">
-          <path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
-            d="M7 2.5h10A4.5 4.5 0 0 1 21.5 7v10a4.5 4.5 0 0 1-4.5 4.5H7A4.5 4.5 0 0 1 2.5 17V7A4.5 4.5 0 0 1 7 2.5Z" />
-          <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6" />
-          <circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" />
-        </svg>
-      </a>
-    </main>
 
-    <style>
-      .cs {
-        min-height: 100dvh; margin: 0;
-        display: flex; align-items: center; justify-content: center;
-        background: var(--bg); color: var(--ink);
-        padding: 2rem;
-      }
-      .cs__main { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.4rem; }
-      .cs__mark {
-        font-family: var(--font-display, 'Archivo'), sans-serif;
-        font-weight: 800; color: var(--red);
-        font-size: clamp(2.4rem, 11vw, 7rem); line-height: 0.95;
-        letter-spacing: -0.02em; margin: 0;
-        font-stretch: 75%;
-      }
-      /* Letter-mask rise + deferred red glow — same treatment as the full
-         site's Hero wordmark (src/components/Hero.astro), reused here via
-         initHero() in scripts/main.js so the coming-soon page isn't a static
-         downgrade of the real intro. */
-      .cs__mark .wordmark__inner { display: block; }
-      .cs__mark .mask { display: inline-block; overflow: hidden; vertical-align: top; }
-      .cs__mark .mask span { display: block; }
-      .cs__mark.is-lit { filter: drop-shadow(0 8px 44px rgba(160,39,22,0.28)); }
-      :global(.no-motion) .cs__mark { filter: drop-shadow(0 8px 44px rgba(160,39,22,0.28)); }
+<Layout path="/">
+  <a href="#main" class="skip-link">Skip to content</a>
+  <Nav />
+  <main id="main">
+    <Hero />
+    <LogoCloud />
+    <Services />
+    <Statement />
+    <Work />
+    <Stats />
+    <About />
+    <Contact />
+  </main>
+  <Footer />
+  <VideoLightbox />
+</Layout>
 
-      .cs__sub { color: var(--muted); font-size: clamp(0.95rem, 2.4vw, 1.1rem); line-height: 1.6; max-width: 34ch; margin: 0; }
-      .cs__link { color: var(--red); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
-      .cs__link:hover { color: var(--red-deep); }
-      .cs__ig { display: inline-flex; color: var(--ink); transition: color 0.25s var(--ease), transform 0.25s var(--ease); margin-top: 0.25rem; }
-      .cs__ig:hover { color: var(--red); transform: translateY(-2px); }
-      .cs__ig:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; border-radius: 4px; }
-
-      @media (prefers-reduced-motion: reduce) {
-        .cs__ig { transition: none; }
-      }
-    </style>
-    <script>
-      import '../scripts/main.js';
-    </script>
-  </body>
-</html>
+<script>
+  import '../scripts/main.js';
+</script>
