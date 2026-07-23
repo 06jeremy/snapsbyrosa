@@ -1,0 +1,256 @@
+---
+// Full-bleed "under construction" placeholder — shown by Layout.astro on every
+// page except /legal while the real site isn't ready to share publicly (see
+// the isLegal check in Layout.astro). Background cycles through a few real
+// portfolio frames (already public on the Pixieset site) via a pure-CSS
+// crossfade loop — works even with scripts disabled. The one thing that
+// does need JS is the mouse-parallax drift on the image layer (see the
+// <script> at the bottom); without JS it just sits still, no crossfade lost.
+import { Image } from 'astro:assets';
+import { getLocalImage } from '../lib/images.ts';
+
+const pixieset = 'https://snapsbyrosa.mypixieset.com';
+
+// A broader, brighter mix of real portfolio frames, weighted toward bright/
+// colourful portraits (this rotates on every non-legal page, so more variety
+// matters most on repeat/mobile views). `pos` keeps the subject's face in
+// frame regardless of viewport ratio (plain object-fit:cover center crops
+// some of these awkwardly since the subjects aren't dead-centre).
+// One frame per person — checked visually to avoid repeating the same
+// model (portfolio-01 and portfolio-18 were dropped/swapped for this reason,
+// same brunette/bangs/trench-coat model in both).
+// `orientation` picks the motion: portrait sources (1500x2000, cropped hard
+// top/bottom by object-fit:cover in this landscape-ish section) get a slow
+// vertical pan instead of a zoom, since panning is what actually reveals more
+// of a tall image rather than just zooming into the same crop.
+const images = [
+  { src: 'portfolio-01.jpg', pos: '50% 25%', orientation: 'portrait' },
+  { src: 'portfolio-03.jpg', pos: '55% 30%', orientation: 'portrait' },
+  { src: 'portfolio-09.jpg', pos: '60% 30%', orientation: 'portrait' },
+  { src: 'portfolio-14.jpg', pos: '45% 30%', orientation: 'landscape' },
+  { src: 'portfolio-16.jpg', pos: '55% 18%', orientation: 'landscape' },
+  { src: 'portfolio-24.jpg', pos: '50% 25%', orientation: 'portrait' },
+  { src: 'portfolio-19.jpg', pos: '68% 28%', orientation: 'landscape' },
+  { src: 'portfolio-27.jpg', pos: '50% 22%', orientation: 'portrait' },
+];
+
+const CYCLE = images.length * 5; // seconds for the full crossfade loop (5s per image)
+const slot = CYCLE / images.length;
+// -2s head start so the very first frame is already mid-hold (fully visible)
+// instead of fading in from nothing on first paint. Each image's fade-in
+// overlaps the previous image's fade-out (see the uc-fade keyframe below),
+// so there is never a moment where every image is near-invisible at once —
+// verified by sampling: opacity always sums to 1 across the whole cycle.
+const startOffset = -2;
+
+// Keyframe stop percentages can't be expressed with calc()/var(), so with a
+// variable image count these have to be computed here and written out as a
+// literal @keyframes rule (below, via set:html) rather than hardcoded — they
+// were previously hand-tuned for exactly 4 images at a 25%-wide slot each;
+// generalised, each image's "on" window is one slotPct wide, positioned the
+// same 0.3 / 1.0 / 1.3 fractions in as before.
+const slotPct = 100 / images.length;
+const fadeInPct = +(slotPct * 0.3).toFixed(3);
+const holdEndPct = +(slotPct * 1.0).toFixed(3);
+const fadeOutEndPct = +(slotPct * 1.3).toFixed(3);
+const fadeKeyframes = `@keyframes uc-fade { 0%, 100% { opacity: 0; } ${fadeInPct}% { opacity: 1; } ${holdEndPct}% { opacity: 1; } ${fadeOutEndPct}% { opacity: 0; } }`;
+---
+<style set:html={fadeKeyframes} />
+<section class="uc">
+  <div class="uc__media">
+    {images.map(({ src, pos, orientation }, i) => (
+      <Image
+        class={`uc__media-el ${orientation === 'portrait' ? 'uc__media-el--pan' : 'uc__media-el--zoom'}`}
+        style={`object-position: ${pos}; animation-delay: ${startOffset + i * slot}s, ${startOffset + i * slot}s`}
+        src={getLocalImage(src)}
+        alt=""
+        widths={[768, 1280, 1600]}
+        sizes="100vw"
+        format="webp"
+        quality={72}
+        loading={i === 0 ? 'eager' : 'lazy'}
+        fetchpriority={i === 0 ? 'high' : 'auto'}
+        decoding="async"
+      />
+    ))}
+  </div>
+  <div class="uc__content">
+    <div class="uc__glass" aria-hidden="true"></div>
+    <h1 class="uc__mark condensed">SNAPSBYROSA<span class="uc__reg">&reg;</span></h1>
+    <p class="uc__sub">This page is still under construction.<br />Take a look at my portfolio, or view the legal page if you have questions.</p>
+    <div class="uc__ctas">
+      <a class="btn btn--red" href={pixieset}>Go to portfolio <span class="arrow" aria-hidden="true">&rarr;</span></a>
+      <a class="btn" href="/legal">Legal &amp; privacy <span class="arrow" aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<style define:vars={{ cycleDuration: `${CYCLE}s` }}>
+  .uc {
+    position: relative;
+    min-height: 100svh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    padding: 2rem;
+    container-type: inline-size;
+  }
+  /* Bold brand-colour frame around the whole full-bleed image, above every
+     layer (media/scrim/content all sit at z-index -2..1). */
+  .uc::after {
+    content: "";
+    position: absolute; inset: 0; z-index: 2;
+    border: 10px solid var(--red);
+    pointer-events: none;
+  }
+
+  /* Inset slightly past the section's own edges (not flush at 0) so the
+     mouse-parallax script below has a safety margin to shift this layer
+     within, without ever exposing a gap at the border. The parallax lives
+     on this wrapper, not on the individual images, so it doesn't fight with
+     each image's own fade/zoom/pan animation — and .uc__content (the
+     wordmark/text) is a separate sibling entirely, so it never moves. */
+  .uc__media { position: absolute; inset: -24px; z-index: -2; will-change: transform; }
+  .uc__media-el {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+    opacity: 0;
+    /* Original photos, just a touch of the brightest highlights taken down
+       so they don't fight with the wordmark/text on top. */
+    filter: brightness(0.92);
+    animation-name: uc-fade, uc-zoom;
+    animation-duration: var(--cycleDuration), var(--cycleDuration);
+    animation-timing-function: ease-in-out, linear;
+    animation-iteration-count: infinite, infinite;
+  }
+  /* uc-fade itself is generated per the actual image count (see fadeKeyframes
+     in the frontmatter above, written out via the unscoped <style set:html>
+     tag) — its stop percentages depend on how many images are in the
+     rotation, which plain CSS can't express with calc()/var(). Staggering
+     each image by exactly one slot means image N's fade-in overlaps image
+     N-1's fade-out — a real crossfade dissolve, never a hard cut. */
+
+  /* Landscape sources: slow continuous Ken-Burns zoom. */
+  .uc__media-el--zoom { animation-name: uc-fade, uc-zoom; }
+  @keyframes uc-zoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.09); }
+  }
+  /* Portrait sources (1500x2000): a slow vertical pan instead of a zoom —
+     object-fit:cover already scales these up until they match the section's
+     width, cropping the excess height, so panning up/down through that
+     cropped-out margin actually reveals more of the photo. A constant
+     scale(1.12) keeps a safety margin so the pan never exposes an edge. */
+  .uc__media-el--pan { animation-name: uc-fade, uc-pan; }
+  @keyframes uc-pan {
+    0% { transform: scale(1.12) translateY(-2.5%); }
+    100% { transform: scale(1.12) translateY(2.5%); }
+  }
+
+  /* No full-image wash, no panel/card — just a soft, subtle blur that fades
+     out toward its own edges instead of stopping at a hard border, so it
+     reads as a blur in the middle of the photo rather than a box sitting on
+     top of it. The blur lives on its own layer (.uc__glass) masked with a
+     radial fade; the text sits in a separate layer on top, unmasked, so the
+     wordmark/subtitle themselves stay fully crisp and opaque. */
+  .uc__content {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 1.4rem;
+    text-align: center;
+    padding: clamp(1.75rem, 4vw, 3rem) clamp(1.5rem, 5vw, 3.5rem);
+    /* Without this a flex item won't shrink below its content's natural
+       (unwrapped) width — which is exactly what was clipping the wordmark
+       and the subtitle off both edges on narrow phones. */
+    min-width: 0;
+    max-width: 100%;
+  }
+  .uc__glass {
+    position: absolute; inset: -8%;
+    z-index: 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, black 30%, transparent 72%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, black 30%, transparent 72%);
+    pointer-events: none;
+  }
+  .uc__mark, .uc__sub, .uc__ctas { position: relative; z-index: 1; }
+  .uc__mark {
+    color: var(--red);
+    /* cqw against .uc (which spans the full section width), not vw — same
+       technique as Hero.astro's wordmark, so this can never overflow at
+       any viewport width instead of clipping past a fixed clamp() floor. */
+    font-size: 13cqw;
+    line-height: 0.88;
+    white-space: nowrap;
+    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.3));
+  }
+  .uc__reg { font-size: 0.35em; vertical-align: super; opacity: 0.8; }
+  .uc__sub {
+    color: #fff; font-weight: 700;
+    font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.5;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.5);
+  }
+  .uc__ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 0.4rem; }
+  /* Both CTAs red + white here, overriding the site's default ink-outline
+     .btn look — translucent rather than solid red. */
+  .uc__ctas .btn {
+    background: rgba(160,39,22,0.72);
+    border-color: rgba(160,39,22,0.72);
+    color: #fff;
+  }
+  .uc__ctas .btn:hover {
+    background: rgba(127,29,16,0.82);
+    border-color: rgba(127,29,16,0.82);
+    color: #fff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .uc__media-el { animation: none; opacity: 0; }
+    .uc__media-el:first-child { opacity: 1; }
+  }
+</style>
+
+<script>
+  // Subtle 3D tilt on the image layer only, leaning gently toward wherever
+  // the cursor is — the wordmark/text (.uc__content) is a separate sibling,
+  // so it never moves. Applied on .uc__media, which sits underneath each
+  // image's own fade/zoom/pan animation (different element), so the two
+  // never fight over `transform`.
+  const uc = document.querySelector('.uc');
+  const media = document.querySelector('.uc__media');
+  if (uc && media && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const MAX_TILT = 0.6; // degrees — barely-there hint, not a wobble
+    // A larger perspective distance is what keeps a rotated flat plane from
+    // looking stretched/keystoned at the edges — the smaller the perspective
+    // value, the more exaggerated (and distorted-looking) the same angle
+    // reads. 4000px + this small an angle keeps it essentially flat.
+    const PERSPECTIVE = 4000;
+    let targetRotX = 0, targetRotY = 0, currentRotX = 0, currentRotY = 0, raf = 0;
+
+    uc.addEventListener('mousemove', (e) => {
+      const rect = uc.getBoundingClientRect();
+      const nx = (e.clientX - rect.left) / rect.width - 0.5; // -0.5..0.5
+      const ny = (e.clientY - rect.top) / rect.height - 0.5;
+      targetRotY = nx * MAX_TILT * 2;   // cursor left/right tilts that edge toward the viewer
+      targetRotX = -ny * MAX_TILT * 2;  // cursor up/down tilts that edge toward the viewer
+      if (!raf) raf = requestAnimationFrame(tick);
+    });
+    uc.addEventListener('mouseleave', () => {
+      targetRotX = 0; targetRotY = 0;
+      if (!raf) raf = requestAnimationFrame(tick);
+    });
+
+    function tick() {
+      // Ease toward the target instead of snapping — a slower coefficient
+      // than before so it reads as a slow, smooth settle rather than
+      // catching up to the cursor.
+      currentRotX += (targetRotX - currentRotX) * 0.04;
+      currentRotY += (targetRotY - currentRotY) * 0.04;
+      media.style.transform = `perspective(${PERSPECTIVE}px) rotateX(${currentRotX.toFixed(3)}deg) rotateY(${currentRotY.toFixed(3)}deg)`;
+      if (Math.abs(targetRotX - currentRotX) > 0.005 || Math.abs(targetRotY - currentRotY) > 0.005) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        raf = 0;
+      }
+    }
+  }
+</script>

@@ -1,14 +1,13 @@
 ---
 // Standalone "coming soon" holding page — this is the PUBLIC landing page.
-// The full site lives at /home/ behind a lightweight password gate.
-// NOTE: this gate keeps casual visitors out; it is not hard security (see the
-// login script comment). For true protection put the domain behind Cloudflare
-// Access (free) or a host with server-side auth.
+// The full site lives at /home/. Password gate removed for now that the site
+// is opening up to the public — see git history if it needs to come back.
 import '../styles/global.css';
 const title = 'SNAPSBYROSA — coming soon';
 const description = 'SNAPSBYROSA — website under construction. Personal-brand photo, film and social content by Jeremy Rosa, The Hague.';
 const pixieset = 'https://snapsbyrosa.mypixieset.com';
 const instagram = 'https://instagram.com/snapsbyrosa';
+const letters = 'SNAPSBYROSA'.split('');
 ---
 <!doctype html>
 <html lang="en" class="no-js">
@@ -31,12 +30,15 @@ const instagram = 'https://instagram.com/snapsbyrosa';
     </script>
   </head>
   <body class="cs">
-    <!-- Top-right login -->
-    <button type="button" class="cs__login" data-open-login aria-haspopup="dialog">Log in</button>
-
-    <main class="cs__main">
-      <h1 class="cs__mark">SNAPSBYROSA</h1>
-      <p class="cs__sub">
+    <main class="cs__main" data-hero>
+      <h1 class="cs__mark hero__title" aria-label="SNAPSBYROSA">
+        <span class="wordmark__inner" aria-hidden="true">
+          {letters.map((ch) => (
+            <span class="mask"><span data-word>{ch}</span></span>
+          ))}
+        </span>
+      </h1>
+      <p class="cs__sub" data-hero-tag>
         Website under construction — for now head to
         <a href={pixieset} class="cs__link">snapsbyrosa.mypixieset.com</a>
       </p>
@@ -50,55 +52,6 @@ const instagram = 'https://instagram.com/snapsbyrosa';
       </a>
     </main>
 
-    <!-- Login dialog -->
-    <div class="cs__overlay" data-login-overlay hidden>
-      <div class="cs__dialog" role="dialog" aria-modal="true" aria-labelledby="cs-login-title">
-        <button type="button" class="cs__close" data-close-login aria-label="Close">&times;</button>
-        <h2 id="cs-login-title" class="cs__dialog-title">Enter password</h2>
-        <form data-login-form>
-          <label class="cs__field-label" for="cs-pw">Password</label>
-          <input type="password" id="cs-pw" class="cs__input" autocomplete="off" autofocus />
-          <p class="cs__error" data-login-error hidden>Incorrect password — try again.</p>
-          <button type="submit" class="cs__submit">Enter site</button>
-        </form>
-      </div>
-    </div>
-
-    <script is:inline>
-      // Lightweight client-side gate. NOT hard security: the check runs in the
-      // browser, so it only keeps casual visitors out. On success we set a
-      // session flag and send the owner to the real site at /home/.
-      (function () {
-        var overlay = document.querySelector('[data-login-overlay]');
-        var form = document.querySelector('[data-login-form]');
-        var pw = document.getElementById('cs-pw');
-        var err = document.querySelector('[data-login-error]');
-        var openBtn = document.querySelector('[data-open-login]');
-        var closeBtn = document.querySelector('[data-close-login]');
-        var PASSWORD = 'snapsbyrosa2006';
-
-        function open() { overlay.hidden = false; err.hidden = true; pw.value = ''; setTimeout(function () { pw.focus(); }, 30); }
-        function close() { overlay.hidden = true; openBtn.focus(); }
-
-        openBtn.addEventListener('click', open);
-        closeBtn.addEventListener('click', close);
-        overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
-        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !overlay.hidden) close(); });
-
-        form.addEventListener('submit', function (e) {
-          e.preventDefault();
-          if (pw.value === PASSWORD) {
-            try { sessionStorage.setItem('sbr-auth', '1'); } catch (e) {}
-            window.location.href = '/home/';
-          } else {
-            err.hidden = false;
-            pw.value = '';
-            pw.focus();
-          }
-        });
-      })();
-    </script>
-
     <style>
       .cs {
         min-height: 100dvh; margin: 0;
@@ -106,16 +59,6 @@ const instagram = 'https://instagram.com/snapsbyrosa';
         background: var(--bg); color: var(--ink);
         padding: 2rem;
       }
-      .cs__login {
-        position: fixed; top: 1.25rem; right: 1.25rem; z-index: 10;
-        font: inherit; font-size: 0.85rem; font-weight: 600;
-        padding: 0.5rem 1.15rem; border-radius: var(--radius-pill);
-        border: 1.5px solid var(--line-strong); background: transparent; color: var(--ink);
-        cursor: pointer; transition: border-color 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease);
-      }
-      .cs__login:hover { border-color: var(--red); background: var(--red); color: var(--dark-fg); }
-      .cs__login:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
-
       .cs__main { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.4rem; }
       .cs__mark {
         font-family: var(--font-display, 'Archivo'), sans-serif;
@@ -124,6 +67,16 @@ const instagram = 'https://instagram.com/snapsbyrosa';
         letter-spacing: -0.02em; margin: 0;
         font-stretch: 75%;
       }
+      /* Letter-mask rise + deferred red glow — same treatment as the full
+         site's Hero wordmark (src/components/Hero.astro), reused here via
+         initHero() in scripts/main.js so the coming-soon page isn't a static
+         downgrade of the real intro. */
+      .cs__mark .wordmark__inner { display: block; }
+      .cs__mark .mask { display: inline-block; overflow: hidden; vertical-align: top; }
+      .cs__mark .mask span { display: block; }
+      .cs__mark.is-lit { filter: drop-shadow(0 8px 44px rgba(160,39,22,0.28)); }
+      :global(.no-motion) .cs__mark { filter: drop-shadow(0 8px 44px rgba(160,39,22,0.28)); }
+
       .cs__sub { color: var(--muted); font-size: clamp(0.95rem, 2.4vw, 1.1rem); line-height: 1.6; max-width: 34ch; margin: 0; }
       .cs__link { color: var(--red); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
       .cs__link:hover { color: var(--red-deep); }
@@ -131,42 +84,12 @@ const instagram = 'https://instagram.com/snapsbyrosa';
       .cs__ig:hover { color: var(--red); transform: translateY(-2px); }
       .cs__ig:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; border-radius: 4px; }
 
-      .cs__overlay {
-        position: fixed; inset: 0; z-index: 100;
-        background: rgba(23,19,15,0.55); backdrop-filter: blur(3px);
-        display: flex; align-items: center; justify-content: center; padding: 1.5rem;
-      }
-      /* Without this the `display:flex` above beats the browser's built-in
-         [hidden]{display:none}, so the dialog would show on load. Keep it. */
-      .cs__overlay[hidden] { display: none; }
-      .cs__dialog {
-        position: relative; background: var(--paper); color: var(--ink);
-        border: 1px solid var(--line); border-radius: var(--radius);
-        padding: 2rem 1.9rem; width: 100%; max-width: 360px;
-        box-shadow: 0 24px 60px rgba(0,0,0,0.3);
-      }
-      .cs__close {
-        position: absolute; top: 0.6rem; right: 0.8rem;
-        background: none; border: none; font-size: 1.6rem; line-height: 1; cursor: pointer; color: var(--muted);
-      }
-      .cs__close:hover { color: var(--red); }
-      .cs__dialog-title { font-size: 1.25rem; margin: 0 0 1.1rem; }
-      .cs__field-label { display: block; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--muted); margin-bottom: 0.4rem; }
-      .cs__input {
-        width: 100%; font: inherit; padding: 0.7rem 0.85rem;
-        border: 1.5px solid var(--line-strong); border-radius: var(--radius); background: #fff; color: var(--ink);
-      }
-      .cs__input:focus { outline: none; border-color: var(--red); }
-      .cs__error { color: var(--red-deep); font-size: 0.85rem; margin: 0.6rem 0 0; }
-      .cs__submit {
-        margin-top: 1.1rem; width: 100%; font: inherit; font-weight: 600;
-        padding: 0.7rem 1rem; border-radius: var(--radius-pill); border: none;
-        background: var(--red); color: #fff; cursor: pointer; transition: background 0.25s var(--ease);
-      }
-      .cs__submit:hover { background: var(--red-deep); }
       @media (prefers-reduced-motion: reduce) {
-        .cs__login, .cs__ig, .cs__submit { transition: none; }
+        .cs__ig { transition: none; }
       }
     </style>
+    <script>
+      import '../scripts/main.js';
+    </script>
   </body>
 </html>

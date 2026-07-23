@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Analytics from '../components/Analytics.astro';
+import UnderConstruction from '../components/UnderConstruction.astro';
 const {
   title = 'SNAPSBYROSA — Personal Brand Photographer & Videographer, The Hague',
   description = 'Photo, film and social content for people and brands, by Jeremy Rosa. Personal-brand photography, short-form video and Instagram content for athletes, founders, milestones and companies. Based in The Hague, working worldwide.',
@@ -8,6 +9,13 @@ const {
 } = Astro.props;
 const site = 'https://snapsbyrosa.com';
 const canonical = site + path;
+// Temporary: the full site (home, work pages) isn't ready to share publicly
+// yet, except /legal — which people need before/after booking. Every other
+// page using this layout shows the UnderConstruction placeholder instead of
+// its real content. Since this is a static build, the real content simply
+// isn't rendered at all for those pages (not hidden via JS) — remove this
+// check once the full site is ready to go public.
+const isLegal = path.startsWith('/legal');
 // Social-share image. Kept as a plain file in /public (NOT run through
 // astro:assets) because scrapers need a stable, un-hashed absolute URL.
 const ogImage = `${site}/img/og-cover.jpg`;
@@ -60,7 +68,7 @@ const jsonLd = {
     itemListElement: [
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Photography', description: 'Editorial portraits and lifestyle imagery.' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Videography', description: 'Story-led films and interviews with cinematic colour and sound.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Social content', description: 'Reels and on-brand Instagram carousels engineered to stop the scroll.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Social content', description: 'Reels and Instagram carousels built for the feed.' } },
     ],
   },
 };
@@ -72,17 +80,6 @@ const jsonLd = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script is:inline>
-      // Client-side gate. The coming-soon page (/) sets sessionStorage 'sbr-auth'
-      // after the correct password; every page built on this layout (/home/,
-      // /legal, /work/…) bounces back to the holding page without it. Runs first
-      // in <head> so protected content never paints for a locked-out visitor.
-      // NOTE: this only deters casual visitors — the markup still ships to the
-      // browser. For real protection put /home/ behind Cloudflare Access.
-      try {
-        if (sessionStorage.getItem('sbr-auth') !== '1') {
-          window.location.replace('/');
-        }
-      } catch (e) {}
       // Open at the top of the page. Set manual scroll restoration HERE (head,
       // before the browser restores the previous position and before the pinned
       // ScrollTrigger stack initialises) so the site always begins on the
@@ -129,7 +126,7 @@ const jsonLd = {
     </script>
   </head>
   <body>
-    <slot />
+    {isLegal ? <slot /> : <UnderConstruction />}
     <Analytics />
   </body>
 </html>

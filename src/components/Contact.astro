@@ -83,7 +83,7 @@ const projectTypes = [
         <!-- Step 2: channel -->
         <div class="wiz__step" data-step="channel" hidden>
           <h3 class="wiz__q" tabindex="-1" data-q>How should we connect?</h3>
-          <p class="wiz__sub">Pick whichever’s easiest — I’ll reach out there.</p>
+          <p class="wiz__sub">Pick whichever’s easiest. I’ll reach out there.</p>
           <div class="wiz__opts wiz__opts--2" role="radiogroup" aria-label="How to connect">
             <label class="opt opt--channel">
               <input type="radio" name="wiz-channel" value="whatsapp" data-label="WhatsApp" />
@@ -104,7 +104,7 @@ const projectTypes = [
           <h3 class="wiz__q" tabindex="-1" data-q>A few quick details.</h3>
           <!-- WhatsApp: no number needed — sending the chat delivers it, and I
                see your number automatically as the sender. -->
-          <p class="wiz__sub" data-when="whatsapp" hidden>No number needed — when you send the chat, I’ll see it (and your number) straight away.</p>
+          <p class="wiz__sub" data-when="whatsapp" hidden>No number needed. Send the chat and I’ll see it, and your number, straight away.</p>
           <div class="wiz__field" data-when="meet" hidden>
             <label class="field__label" for="wiz-email">Your email</label>
             <input id="wiz-email" name="wiz-email" type="email" autocomplete="email" placeholder="you@email.com" />
@@ -148,13 +148,13 @@ const projectTypes = [
 
         <!-- Done -->
         <div class="wiz__step wiz__done" data-step="done" hidden>
-          <h3 class="wiz__q" tabindex="-1" data-q>Thank you — that’s sent.</h3>
+          <h3 class="wiz__q" tabindex="-1" data-q>Thank you. That’s sent.</h3>
           <p class="wiz__done-msg" data-done-when="whatsapp" hidden>
             I’ve opened WhatsApp with your details. If nothing happened,
             <a data-wa-fallback href="#" target="_blank" rel="noopener">tap here to open the chat</a>.
           </p>
           <p class="wiz__done-msg" data-done-when="meet" hidden>
-            Thanks — I’ll confirm your Google Meet and send an invite to
+            Thanks. I’ll confirm your Google Meet and send an invite to
             <strong data-done-email>your email</strong> within one business day.
           </p>
         </div>

@@ -4,7 +4,7 @@ A working document. The goal is concrete: **fully booked months** = 2 retainer c
 + at least 2 milestone shoots a week, landing **€5k/month or more**. This lays out
 what you, the business, the socials, and the site each need. Check things off as you go.
 
-Last updated: 8 July 2026
+Last updated: 22 July 2026
 
 ---
 
@@ -28,13 +28,38 @@ top 1% is not more shoots — it's **higher prices for the same number of shoots
 
 The site is built and de-slopped. These are the last blockers before it should be public.
 
-- [ ] **Fill legal placeholders** — KvK number and btw-id on `/legal` (both required once registered).
-- [ ] **Confirm hosting provider name** on `/legal` (privacy section, `[HOSTING PROVIDER]`).
-- [ ] **Set up Google Analytics** — create a free GA4 property, paste the `G-XXXXXXXXXX`
-      ID into `src/components/Analytics.astro` (line 24). Until then, no banner/cookies show. See "Dashboard" below.
-- [ ] **Register the domain email** `info@snapsbyrosa.com` so enquiries actually arrive.
-- [ ] **Double-check the WhatsApp number** wired into the contact form (+31 6 41592658).
+- [x] **Legal placeholders removed** — KvK and btw-id lines dropped from `/legal` since
+      registration isn't done yet, rather than showing "to follow." Revisit once KvK/btw-id
+      exist — quotes go out net of VAT until then (see the pricing framework).
+- [x] **Hosting provider confirmed** on `/legal` (privacy section) — GitHub Pages serves the
+      site, Porkbun handles the domain and email forwarding.
+- [x] **HTTPS fixed and enforced** — `snapsbyrosa.com` redirects HTTP → HTTPS with a valid
+      certificate.
+- [x] **Password gate removed** — `/home/`, `/legal`, `/work/*` are all directly public now.
+- [ ] **Fix the domain root** — `snapsbyrosa.com` (`/`) still shows the old "coming soon, head
+      to Pixieset" holding page with no link into `/home/`. Now that the gate's gone, this is
+      the real blocker: decide whether `/` redirects to `/home/`, or the coming-soon page is
+      retired and `/home/`'s content moves to `/`. This is also the URL the sitemap lists as
+      priority 1.0, so it's what search engines index as the homepage.
+- [ ] **Testimonials shows real placeholder text to live visitors** — "Client name" ×8,
+      "Their words go here" ×3, "Video coming soon" ×3, confirmed on the live page. Fill with
+      real quotes/video before launch, or comment the section out of `home/index.astro` until
+      ready — no section reads better than an obviously fake one.
+- [ ] **Set up Google Analytics** — deliberately deferred; site opens to the public first, GA4
+      comes later. Create a free GA4 property, paste the `G-XXXXXXXXXX` ID into
+      `src/components/Analytics.astro` (line 24) when ready.
+- [ ] **Confirm `info@snapsbyrosa.com` actually delivers** — MX/SPF for Porkbun's email
+      forwarding are correctly configured, but delivery to the inbox is unverified. Send a
+      test email.
+- [ ] **Confirm the real availability hours** in `src/components/Contact.astro` (currently
+      Mon–Sat, 17:00–18:30 CET) — the file's own comment flags this as needing real values.
+- [ ] **Get a free Web3Forms key** (web3forms.com) for `Contact.astro`'s `WEB3FORMS_KEY` —
+      without it, Google Meet requests fall back to a `mailto:` link instead of landing
+      directly in the inbox.
 - [ ] **Buy/confirm the KvK registration** if not done — you cannot legally invoice without it.
+- [ ] **Remaining LogoCloud logos** — Government of Curaçao, Favela Street, Youmeet, CSA still
+      show as text-fallback wordmarks pending real transparent logo art (see the component's
+      own TODO comment).
 
 ---
 

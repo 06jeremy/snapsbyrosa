@@ -11,7 +11,7 @@ import { getLocalImage } from '../lib/images.ts';
 <section class="work section" id="work">
   <div class="container">
     <header class="work__head">
-      <h2 class="work__title condensed reveal">Content that connects,<br />performs, and moves people</h2>
+      <h2 class="work__title condensed reveal">Made to be posted,<br />not just delivered</h2>
       <div class="work__meta">
         <span class="work__label reveal">The Work</span>
         <!-- TODO(real-content): switch to "( Selected · 20XX–XX )" once real dated projects exist. -->
@@ -74,12 +74,21 @@ import { getLocalImage } from '../lib/images.ts';
   .work__list { display: flex; flex-direction: column; gap: clamp(2.5rem, 6vw, 5rem); }
 
   .wk { position: relative; }
+  /* Zigzag frames bleed off the screen edge on the side they hug, while the
+     inner edge stays exactly where the 88%/12% split originally put it — the
+     block only gets WIDER, it doesn't shift. `calc(50% - 50vw)` is the
+     standard full-bleed-from-a-centered-container offset (cancels out both
+     the container's max-width centering and its gutter in one go, on any
+     screen size); `calc(38% + 50vw)` is the matching width so the far edge
+     lands back on the original 88%-of-container mark. */
   .wk__link {
     position: relative; display: block;
-    width: 88%;                 /* leaves room for the zigzag offset */
-    margin-right: auto;         /* odd → hug the left */
+    width: calc(38% + 50vw);
+    margin-left: calc(50% - 50vw);  /* odd → bleed to the left screen edge */
   }
-  .wk:nth-child(even) .wk__link { margin-right: 0; margin-left: auto; } /* even → hug the right */
+  .wk:nth-child(even) .wk__link {
+    margin-left: 12%; /* left edge stays put; same width makes the right edge bleed */
+  }
   .wk__link:focus-visible { outline: 2px solid var(--red); outline-offset: 6px; }
 
   /* Big index number, diagonally opposite the caption */
