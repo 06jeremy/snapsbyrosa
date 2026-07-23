@@ -4,13 +4,16 @@
 // solid, standard baseline for a Dutch sole trader (eenmanszaak / ZZP) not yet
 // KvK-registered. This is not legal advice — have a professional review it if
 // you want full certainty (see the note at the end).
+// Section order is client-first: FAQ and booking/shoot terms (what a client
+// actually comes here to check) before the more formal/compliance sections
+// (business details, privacy, cookies, terms of use).
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
 const updated = '22 July 2026';
-const title = 'Legal & privacy — SNAPSBYROSA';
-const description = 'Business details, privacy policy (GDPR/AVG), cookie information, booking terms and FAQ for SNAPSBYROSA, The Hague.';
+const title = 'Legal, privacy & FAQ — SNAPSBYROSA';
+const description = 'FAQ, booking & shoot terms, business details, privacy policy (GDPR/AVG) and cookie information for SNAPSBYROSA, The Hague.';
 ---
 <Layout title={title} description={description} path="/legal">
   <a href="#main" class="skip-link">Skip to content</a>
@@ -19,110 +22,69 @@ const description = 'Business details, privacy policy (GDPR/AVG), cookie informa
     <div class="container">
       <header class="legal__head">
         <a class="legal__back" href="/home/"><span aria-hidden="true">←</span> Back to site</a>
-        <h1 class="legal__title condensed">Legal &amp; privacy</h1>
+        <h1 class="legal__title condensed">Legal, privacy &amp; FAQ</h1>
         <p class="legal__updated">Last updated: {updated}</p>
       </header>
 
-      <section class="legal__quickfacts" id="quickfacts" aria-label="What you need to know">
-        <h2>What you need to know</h2>
-        <ul class="legal__quicklist">
-          <li>Copyright stays with SNAPSBYROSA; you get a licence to use what's agreed in your quote.</li>
-          <li>No RAW files — you receive the finished, edited files only.</li>
-          <li>Credit <strong>@snapsbyrosa</strong> when you post the photos or video.</li>
-          <li>50% deposit to book, 50% before the final files are released.</li>
-          <li>Full-resolution files stay locked until the balance is paid.</li>
-          <li>SNAPSBYROSA may show the work in its portfolio, unless told in writing not to.</li>
-        </ul>
-      </section>
-
       <div class="legal__layout">
         <nav class="legal__sidebar" aria-label="On this page">
-          <a href="#quickfacts">What you need to know</a>
+          <a href="#faq">FAQ</a>
+          <a href="#booking">Booking &amp; shoot terms</a>
           <a href="#business">Business details</a>
           <a href="#privacy">Privacy policy</a>
           <a href="#cookies">Cookies</a>
-          <a href="#booking">Booking &amp; shoot terms</a>
           <a href="#terms">Terms of use</a>
-          <a href="#faq">FAQ</a>
         </nav>
 
         <div class="legal__content">
-          <!-- 1. IMPRINT / COLOFON -->
-          <section class="legal__sec" id="business">
-            <h2>Business details</h2>
-            <p>This website is run by:</p>
-            <ul class="legal__facts">
-              <li><span>Trade name</span> SNAPSBYROSA</li>
-              <li><span>Owner</span> Jeremy Jordan Rosa</li>
-              <li><span>Based in</span> The Hague, Netherlands</li>
-              <li><span>Email</span> <a href="mailto:info@snapsbyrosa.com">info@snapsbyrosa.com</a></li>
-              <li><span>Phone</span> <a href="tel:+31641592658">+31 6 41592658</a></li>
-            </ul>
+          <!-- 1. FAQ -->
+          <section class="legal__sec" id="faq">
+            <h2>FAQ</h2>
+            <div class="legal__faq">
+              <details>
+                <summary>Do I get the RAW files?</summary>
+                <p>No. You receive the finished, edited files only. RAW files aren't part of any package.</p>
+              </details>
+              <details>
+                <summary>How does payment work?</summary>
+                <p>50% deposit to confirm your booking (non-refundable, reserves the date), and the remaining 50% before the final files are released. Full breakdown under Booking &amp; shoot terms below.</p>
+              </details>
+              <details>
+                <summary>Who owns the copyright?</summary>
+                <p>SNAPSBYROSA retains copyright over everything shot and edited. You get a licence to use the delivered files for what's agreed in your quote — your website, social media, personal or company promotion.</p>
+              </details>
+              <details>
+                <summary>Can I use the photos for my own business or website?</summary>
+                <p>Yes, for whatever's agreed in your quote — your website, social media, personal or company promotion. Anything beyond that, like reselling the images or licensing them to a third party, needs written agreement from SNAPSBYROSA first.</p>
+              </details>
+              <details>
+                <summary>Can I edit or apply filters to the photos myself?</summary>
+                <p>Please don't heavily edit, filter, or alter the photos before sharing them — a simple crop or resize for a platform is fine. This keeps the work representing the style you booked, and it's also your right (and mine) under Dutch copyright law (Auteurswet art. 25) to object to changes that alter the character of the work.</p>
+              </details>
+              <details>
+                <summary>How do I need to credit you on social media?</summary>
+                <p>Tag @snapsbyrosa in the post, or credit SNAPSBYROSA in the caption — "shot by @snapsbyrosa" works fine. No credit is needed on your own website unless otherwise agreed.</p>
+              </details>
+              <details>
+                <summary>How long until I get my photos?</summary>
+                <p>Turnaround depends on the shoot and is stated in your quote. Rush delivery is available for an extra fee if you need it faster.</p>
+              </details>
+              <details>
+                <summary>What happens if I don't pay the balance?</summary>
+                <p>The full-resolution files stay locked, and the licence to use them doesn't start, until the balance is paid.</p>
+              </details>
+              <details>
+                <summary>What if I need to cancel or move the shoot?</summary>
+                <p>The deposit is non-refundable either way. Cancel more than 7 days out and nothing further is owed. Inside 7 days, 50% of the remaining fee is due. Rescheduling once, for free, is fine with more than 48 hours' notice.</p>
+              </details>
+              <details>
+                <summary>Will my photos show up on your portfolio or social media?</summary>
+                <p>Some of the best shots from your session may be featured in my portfolio or on social media. If you'd rather they weren't, just let me know by text and they'll be left out.</p>
+              </details>
+            </div>
           </section>
 
-          <!-- 2. PRIVACY POLICY -->
-          <section class="legal__sec" id="privacy">
-            <h2>Privacy policy</h2>
-            <p>
-              What personal data SNAPSBYROSA collects, why, and your rights under
-              the GDPR (in Dutch, the AVG):
-            </p>
-
-            <h3>What is collected and why</h3>
-            <ul>
-              <li>
-                <strong>When you use the enquiry form:</strong> your project details, the
-                way you want to be contacted, and — if you choose Google Meet — your email
-                address. This is used only to reply to you and plan the work. Legal basis:
-                steps taken at your request before entering into an agreement.
-              </li>
-              <li>
-                <strong>When you message on WhatsApp:</strong> your message and phone number
-                reach SNAPSBYROSA through WhatsApp. WhatsApp's own privacy terms apply to that chat.
-              </li>
-              <li>
-                <strong>Visit statistics (only if you accept cookies):</strong> anonymised
-                data about pages viewed and rough location. No advertising, no cross-site
-                tracking. Legal basis: your consent, which you can withdraw at any time.
-              </li>
-            </ul>
-
-            <h3>Who processes it</h3>
-            <p>Service providers used to run this site:</p>
-            <ul>
-              <li><strong>Hosting:</strong> GitHub Pages serves the website; Porkbun handles the domain and email forwarding.</li>
-              <li><strong>Web3Forms / email:</strong> delivers enquiry-form messages to the SNAPSBYROSA inbox.</li>
-              <li><strong>Google Analytics:</strong> visit statistics, only after you accept cookies.</li>
-            </ul>
-
-            <h3>How long data is kept</h3>
-            <p>
-              Enquiry and project correspondence is kept for as long as needed to do the
-              work and to meet Dutch tax record-keeping rules (invoices: 7 years). Anything
-              not needed is deleted. Analytics data is retained per Google's settings.
-            </p>
-
-            <h3>Your rights</h3>
-            <p>
-              You can ask to see, correct, or delete the personal data SNAPSBYROSA holds about
-              you, or object to its use. Email <a href="mailto:info@snapsbyrosa.com">info@snapsbyrosa.com</a>
-              for a response within 30 days. You can also complain to the Dutch Data
-              Protection Authority (Autoriteit Persoonsgegevens, autoriteitpersoonsgegevens.nl).
-            </p>
-          </section>
-
-          <!-- 3. COOKIES -->
-          <section class="legal__sec" id="cookies">
-            <h2>Cookies</h2>
-            <p>
-              This site does not set any tracking cookies unless you accept them. On your
-              first visit you're asked once. If you accept, Google Analytics places cookies
-              to count visits; if you decline, nothing is set. You can change your mind by
-              clearing this site's data in your browser, which brings the choice back.
-            </p>
-          </section>
-
-          <!-- 4. BOOKING & SHOOT TERMS (client policy) -->
+          <!-- 2. BOOKING & SHOOT TERMS (client policy) -->
           <section class="legal__sec" id="booking">
             <h2>Booking &amp; shoot terms</h2>
             <p>
@@ -238,7 +200,82 @@ const description = 'Business details, privacy policy (GDPR/AVG), cookie informa
             </p>
           </section>
 
-          <!-- 5. TERMS OF USE -->
+          <!-- 3. IMPRINT / COLOFON -->
+          <section class="legal__sec" id="business">
+            <h2>Business details</h2>
+            <p>This website is run by:</p>
+            <ul class="legal__facts">
+              <li><span>Trade name</span> SNAPSBYROSA</li>
+              <li><span>Owner</span> Jeremy Jordan Rosa</li>
+              <li><span>Based in</span> The Hague, Netherlands</li>
+              <li><span>Email</span> <a href="mailto:info@snapsbyrosa.com">info@snapsbyrosa.com</a></li>
+              <li><span>Phone</span> <a href="tel:+31641592658">+31 6 41592658</a></li>
+            </ul>
+          </section>
+
+          <!-- 4. PRIVACY POLICY -->
+          <section class="legal__sec" id="privacy">
+            <h2>Privacy policy</h2>
+            <p>
+              What personal data SNAPSBYROSA collects, why, and your rights under
+              the GDPR (in Dutch, the AVG):
+            </p>
+
+            <h3>What is collected and why</h3>
+            <ul>
+              <li>
+                <strong>When you use the enquiry form:</strong> your project details, the
+                way you want to be contacted, and — if you choose Google Meet — your email
+                address. This is used only to reply to you and plan the work. Legal basis:
+                steps taken at your request before entering into an agreement.
+              </li>
+              <li>
+                <strong>When you message on WhatsApp:</strong> your message and phone number
+                reach SNAPSBYROSA through WhatsApp. WhatsApp's own privacy terms apply to that chat.
+              </li>
+              <li>
+                <strong>Visit statistics (only if you accept cookies):</strong> anonymised
+                data about pages viewed and rough location. No advertising, no cross-site
+                tracking. Legal basis: your consent, which you can withdraw at any time.
+              </li>
+            </ul>
+
+            <h3>Who processes it</h3>
+            <p>Service providers used to run this site:</p>
+            <ul>
+              <li><strong>Hosting:</strong> GitHub Pages serves the website; Porkbun handles the domain and email forwarding.</li>
+              <li><strong>Web3Forms / email:</strong> delivers enquiry-form messages to the SNAPSBYROSA inbox.</li>
+              <li><strong>Google Analytics:</strong> visit statistics, only after you accept cookies.</li>
+            </ul>
+
+            <h3>How long data is kept</h3>
+            <p>
+              Enquiry and project correspondence is kept for as long as needed to do the
+              work and to meet Dutch tax record-keeping rules (invoices: 7 years). Anything
+              not needed is deleted. Analytics data is retained per Google's settings.
+            </p>
+
+            <h3>Your rights</h3>
+            <p>
+              You can ask to see, correct, or delete the personal data SNAPSBYROSA holds about
+              you, or object to its use. Email <a href="mailto:info@snapsbyrosa.com">info@snapsbyrosa.com</a>
+              for a response within 30 days. You can also complain to the Dutch Data
+              Protection Authority (Autoriteit Persoonsgegevens, autoriteitpersoonsgegevens.nl).
+            </p>
+          </section>
+
+          <!-- 5. COOKIES -->
+          <section class="legal__sec" id="cookies">
+            <h2>Cookies</h2>
+            <p>
+              This site does not set any tracking cookies unless you accept them. On your
+              first visit you're asked once. If you accept, Google Analytics places cookies
+              to count visits; if you decline, nothing is set. You can change your mind by
+              clearing this site's data in your browser, which brings the choice back.
+            </p>
+          </section>
+
+          <!-- 6. TERMS OF USE -->
           <section class="legal__sec" id="terms">
             <h2>Terms of use</h2>
             <p>
@@ -253,45 +290,6 @@ const description = 'Business details, privacy policy (GDPR/AVG), cookie informa
               separately in a quote or contract before work begins.
             </p>
             <p>Dutch law applies to this website and any dispute is subject to the Dutch courts.</p>
-          </section>
-
-          <!-- 6. FAQ -->
-          <section class="legal__sec" id="faq">
-            <h2>FAQ</h2>
-            <div class="legal__faq">
-              <details>
-                <summary>Do I get the RAW files?</summary>
-                <p>No. You receive the finished, edited files only. RAW files aren't part of any package.</p>
-              </details>
-              <details>
-                <summary>How do I need to credit you on social media?</summary>
-                <p>Tag @snapsbyrosa in the post, or credit SNAPSBYROSA in the caption — "shot by @snapsbyrosa" works fine. No credit is needed on your own website unless otherwise agreed.</p>
-              </details>
-              <details>
-                <summary>Can I use the photos for my own business or website?</summary>
-                <p>Yes, for whatever's agreed in your quote — your website, social media, personal or company promotion. Anything beyond that, like reselling the images or licensing them to a third party, needs written agreement from SNAPSBYROSA first.</p>
-              </details>
-              <details>
-                <summary>How long until I get my photos?</summary>
-                <p>Turnaround depends on the shoot and is stated in your quote. Rush delivery is available for an extra fee if you need it faster.</p>
-              </details>
-              <details>
-                <summary>What happens if I don't pay the balance?</summary>
-                <p>The full-resolution files stay locked, and the licence to use them doesn't start, until the balance is paid.</p>
-              </details>
-              <details>
-                <summary>What if I need to cancel or move the shoot?</summary>
-                <p>The deposit is non-refundable either way. Cancel more than 7 days out and nothing further is owed. Inside 7 days, 50% of the remaining fee is due. Rescheduling once, for free, is fine with more than 48 hours' notice.</p>
-              </details>
-              <details>
-                <summary>Do you charge VAT?</summary>
-                <p>No — prices are net, with no VAT added.</p>
-              </details>
-              <details>
-                <summary>Will my photos show up on your portfolio or social media?</summary>
-                <p>Possibly. If your shoot is private and you'd rather it wasn't shown, say so in writing and it will be left out.</p>
-              </details>
-            </div>
           </section>
         </div>
       </div>
@@ -322,28 +320,6 @@ const description = 'Business details, privacy policy (GDPR/AVG), cookie informa
   .legal__title { font-size: clamp(2.2rem, 7vw, 4.5rem); line-height: 0.95; }
   .legal__updated { color: var(--muted); font-size: 0.9rem; margin-top: 0.6rem; }
 
-  /* ---------- Quick facts ---------- */
-  .legal__quickfacts {
-    max-width: 760px;
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-left: 3px solid var(--red);
-    border-radius: var(--radius);
-    padding: clamp(1.25rem, 3vw, 1.75rem) clamp(1.5rem, 4vw, 2rem);
-    margin-bottom: clamp(2.5rem, 6vw, 4rem);
-  }
-  .legal__quickfacts h2 {
-    font-family: var(--font-display); font-size: clamp(1.3rem, 3vw, 1.7rem);
-    letter-spacing: -0.02em; margin-bottom: 0.5rem;
-  }
-  .legal__quicklist { list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 0.55rem; }
-  .legal__quicklist li {
-    position: relative; padding-left: 1.15rem; font-size: 0.95rem; line-height: 1.5;
-  }
-  .legal__quicklist li::before {
-    content: ""; position: absolute; left: 0; top: 0.55em;
-    width: 6px; height: 6px; border-radius: 50%; background: var(--red);
-  }
 
   /* ---------- Sidebar + content layout ---------- */
   .legal__layout {
