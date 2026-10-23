@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import Analytics from '../components/Analytics.astro';
-import UnderConstruction from '../components/UnderConstruction.astro';
 const {
   title = 'SNAPSBYROSA — Personal Brand Photographer & Videographer, The Hague',
   description = 'Photo, film and social content for people and brands, by Jeremy Rosa. Personal-brand photography, short-form video and Instagram content for athletes, founders, milestones and companies. Based in The Hague, working worldwide.',
@@ -9,13 +8,6 @@ const {
 } = Astro.props;
 const site = 'https://snapsbyrosa.com';
 const canonical = site + path;
-// Temporary: the full site (home, work pages) isn't ready to share publicly
-// yet, except /legal — which people need before/after booking. Every other
-// page using this layout shows the UnderConstruction placeholder instead of
-// its real content. Since this is a static build, the real content simply
-// isn't rendered at all for those pages (not hidden via JS) — remove this
-// check once the full site is ready to go public.
-const isLegal = path.startsWith('/legal');
 // Social-share image. Kept as a plain file in /public (NOT run through
 // astro:assets) because scrapers need a stable, un-hashed absolute URL.
 const ogImage = `${site}/img/og-cover.jpg`;
@@ -126,7 +118,7 @@ const jsonLd = {
     </script>
   </head>
   <body>
-    {isLegal ? <slot /> : <UnderConstruction />}
+    <slot />
     <Analytics />
   </body>
 </html>
