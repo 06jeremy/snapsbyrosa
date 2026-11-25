@@ -1,24 +1,15 @@
 ---
-// Public landing page — same as /home/, both currently gated to the
-// UnderConstruction placeholder by Layout.astro (everything except /legal
-// is). Previously this was a separate standalone "coming soon" page with
-// its own minimal markup; merged into the same Layout-based route as
-// /home/ so Google (which indexes and links to the bare root) and anyone
-// visiting /home/ directly see the identical, fuller placeholder instead of
-// two different-looking pages.
+// One landing page: hero with the booking process, what I offer, client video, who I am, book.
+// The earlier full design lives on branch archive/v1-full-site (tag v1-full-site).
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
-import Statement from '../components/Statement.astro';
-import Services from '../components/Services.astro';
-import Work from '../components/Work.astro';
-import Stats from '../components/Stats.astro';
-import LogoCloud from '../components/LogoCloud.astro';
+import Offer from '../components/Offer.astro';
+import Proof from '../components/Proof.astro';
 import About from '../components/About.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
-import Testimonials from '../components/Testimonials.astro';
-import VideoLightbox from '../components/VideoLightbox.astro';
+import StickyBook from '../components/StickyBook.astro';
 ---
 
 <Layout path="/">
@@ -26,19 +17,11 @@ import VideoLightbox from '../components/VideoLightbox.astro';
   <Nav />
   <main id="main">
     <Hero />
-    <LogoCloud />
-    <Services />
-    <Statement />
-    <Work />
-    <Stats />
+    <Offer />
+    <Proof />
     <About />
-    <Testimonials />
     <Contact />
   </main>
   <Footer />
-  <VideoLightbox />
+  <StickyBook />
 </Layout>
-
-<script>
-  import '../scripts/main.js';
-</script>

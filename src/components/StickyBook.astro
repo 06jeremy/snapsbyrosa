@@ -1,0 +1,36 @@
+---
+import { whatsapp } from '../lib/contact.ts';
+---
+<a class="sticky btn" href={whatsapp()} target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">Book on WhatsApp</a>
+
+<script is:inline>
+  // Phone only: keep the booking button in thumb reach once the page buttons scroll away.
+  (function () {
+    var bar = document.querySelector('.sticky');
+    var spots = document.querySelectorAll('.hero .btn, #contact .btn, .footer');
+    if (!bar || !('IntersectionObserver' in window)) return;
+    var seen = new Set();
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { e.isIntersecting ? seen.add(e.target) : seen.delete(e.target); });
+      var show = seen.size === 0;
+      bar.classList.toggle('is-on', show);
+      bar.setAttribute('aria-hidden', show ? 'false' : 'true');
+      bar.tabIndex = show ? 0 : -1;
+    });
+    spots.forEach(function (s) { io.observe(s); });
+  })();
+</script>
+
+<style>
+  .sticky { display: none; }
+  @media (max-width: 720px) {
+    .sticky {
+      display: flex; justify-content: center;
+      position: fixed; z-index: 30;
+      left: 1rem; right: 1rem; bottom: max(1rem, env(safe-area-inset-bottom));
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+      transform: translateY(160%); transition: transform 0.35s var(--ease);
+    }
+    .sticky.is-on { transform: none; }
+  }
+</style>

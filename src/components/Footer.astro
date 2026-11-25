@@ -1,77 +1,18 @@
 ---
 const year = new Date().getFullYear();
+const { light = false } = Astro.props;
 ---
-<footer class="footer">
-  <div class="container">
-    <div class="footer__top-row">
-      <div class="footer__intro">
-        <p class="footer__tagline">Photo, film and social content for people and brands.</p>
-        <a href="/home/#contact" class="footer__cta">Start a project <span aria-hidden="true">→</span></a>
-      </div>
-      <div class="footer__contact">
-        <a href="mailto:info@snapsbyrosa.com">info@snapsbyrosa.com</a>
-        <a href="https://instagram.com/snapsbyrosa" target="_blank" rel="noopener">Instagram</a>
-        <span class="footer__loc">The Hague · Since 2024</span>
-      </div>
-    </div>
-
-    <div class="footer__mark condensed" aria-hidden="true">SNAPSBYROSA</div>
-
-    <div class="footer__row">
-      <p class="footer__cred">© {year} SNAPSBYROSA — The Hague, NL</p>
-      <nav class="footer__links" aria-label="Footer">
-        <a href="/home/#work">Work</a>
-        <a href="/home/#services">Services</a>
-        <a href="/home/#about">About</a>
-        <a href="/home/#contact">Contact</a>
-        <a href="/legal">Legal &amp; privacy</a>
-      </nav>
-      <button class="footer__top" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to top ↑</button>
-    </div>
+<footer class={`footer${light ? ' footer--light' : ''}`}>
+  <div class="container footer__in">
+    <p>© {year} SNAPSBYROSA, The Hague</p>
+    <a href="/legal">Legal and privacy</a>
   </div>
 </footer>
 
 <style>
-  .footer { background: var(--dark-bg); color: var(--dark-fg); padding-block: clamp(3rem, 7vw, 5rem) 2rem; border-top: 1px solid var(--dark-line); }
-
-  .footer__top-row {
-    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start;
-    gap: 2rem; margin-bottom: clamp(2.5rem, 6vw, 4rem);
-  }
-  .footer__tagline {
-    font-family: var(--font-display); font-weight: 500;
-    font-size: clamp(1.4rem, 3vw, 2.1rem); line-height: 1.15;
-    max-width: 20ch; color: var(--dark-fg);
-  }
-  .footer__cta {
-    display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.25rem;
-    font-weight: 600; color: var(--red);
-  }
-  .footer__cta:hover { color: var(--dark-fg); }
-  .footer__cta span { transition: transform 0.4s var(--ease); }
-  .footer__cta:hover span { transform: translateX(4px); }
-  .footer__contact { display: flex; flex-direction: column; gap: 0.55rem; font-size: 0.95rem; text-align: right; }
-  .footer__contact a:hover { color: var(--red); }
-  .footer__loc { color: var(--dark-muted); font-size: 0.85rem; letter-spacing: 0.04em; }
-
-  .footer__mark {
-    font-size: clamp(2.4rem, 16vw, 13rem);
-    line-height: 0.9; color: var(--red);
-    letter-spacing: -0.02em;
-    word-break: break-word;
-    margin-bottom: 2.5rem;
-  }
-  .footer__row {
-    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
-    gap: 1.25rem; padding-top: 2rem; border-top: 1px solid var(--dark-line);
-  }
-  .footer__cred { color: var(--dark-muted); font-size: 0.9rem; }
-  .footer__links { display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: 0.9rem; }
-  .footer__links a:hover, .footer__top:hover { color: var(--red); }
-  .footer__top { font-size: 0.9rem; }
-
-  @media (max-width: 620px) {
-    .footer__top-row { flex-direction: column; gap: 1.75rem; }
-    .footer__contact { text-align: left; }
-  }
+  .footer { background: var(--night); color: var(--smoke); padding-block: 1.5rem; font-size: 0.9rem; }
+  .footer--light { background: var(--bg); color: var(--muted); border-top: 1px solid var(--line); }
+  .footer__in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+  .footer a { display: inline-block; padding-block: 0.8rem; }
+  .footer a:hover { color: var(--red); }
 </style>

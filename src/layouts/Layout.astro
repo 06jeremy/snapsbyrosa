@@ -1,25 +1,18 @@
 ---
 import '../styles/global.css';
+import fontUrl from '../assets/fonts/archivo-latin-wdth-normal.woff2?url';
 import Analytics from '../components/Analytics.astro';
 const {
-  title = 'SNAPSBYROSA — Personal Brand Photographer & Videographer, The Hague',
-  description = 'Photo, film and social content for people and brands, by Jeremy Rosa. Personal-brand photography, short-form video and Instagram content for athletes, founders, milestones and companies. Based in The Hague, working worldwide.',
+  title = 'SNAPSBYROSA — Birthday portraits and content, The Hague',
+  description = 'Photos and short clips for the days you want to keep. Birthday portraits and content, shot and edited by Jeremy Rosa in The Hague.',
   path = '/',
+  theme = 'dark',
 } = Astro.props;
 const site = 'https://snapsbyrosa.com';
 const canonical = site + path;
-// Social-share image. Kept as a plain file in /public (NOT run through
-// astro:assets) because scrapers need a stable, un-hashed absolute URL.
+// Social-share image: plain file in /public so scrapers get a stable URL.
 const ogImage = `${site}/img/og-cover.jpg`;
-const ogImageAlt = 'Editorial personal-brand portrait by SNAPSBYROSA';
 
-// Structured data. Describes the studio as a service + its founder so search
-// engines and social/AI surfaces understand what SNAPSBYROSA is, who runs it,
-// where it operates, and what it offers.
-// NOTE (real-content TODO): once confirmed, add `sameAs` (real Instagram /
-// Vimeo / LinkedIn URLs), `telephone`, `priceRange`, and an `aggregateRating`
-// backed by REAL reviews. Do NOT add fabricated socials/ratings — they break
-// trust and violate structured-data guidelines.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
@@ -38,54 +31,32 @@ const jsonLd = {
     addressRegion: 'South Holland',
     addressCountry: 'NL',
   },
-  areaServed: ['The Hague', 'Netherlands', 'Worldwide'],
-  founder: {
-    '@type': 'Person',
-    name: 'Jeremy Jordan Rosa',
-    jobTitle: 'Founder & Lead Creative',
-  },
-  knowsAbout: [
-    'Personal brand photography',
-    'Portrait photography',
-    'Short-form video',
-    'Social media content',
-    'Videography',
-    'Brand storytelling',
-    'Employer branding content',
-    'Corporate storytelling',
-  ],
+  areaServed: ['The Hague', 'Netherlands'],
+  founder: { '@type': 'Person', name: 'Jeremy Jordan Rosa', jobTitle: 'Photographer and videographer' },
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'Content services',
+    name: 'Sessions',
     itemListElement: [
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Photography', description: 'Editorial portraits and lifestyle imagery.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Videography', description: 'Story-led films and interviews with cinematic colour and sound.' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Social content', description: 'Reels and Instagram carousels built for the feed.' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Birthday portraits' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Content: photos and short clips' } },
     ],
   },
 };
 ---
 
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script is:inline>
-      // Open at the top of the page. Set manual scroll restoration HERE (head,
-      // before the browser restores the previous position and before the pinned
-      // ScrollTrigger stack initialises) so the site always begins on the
-      // homepage hero rather than dropping you partway down after login/reload.
-      // Deep links (#work, #contact, …) still scroll to their section normally.
-      try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="SNAPSBYROSA" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <meta name="theme-color" content="#e6e6e6" />
+    <meta name="theme-color" content="#17130f" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={fontUrl} as="font" type="font/woff2" crossorigin />
 
     <meta property="og:site_name" content="SNAPSBYROSA" />
     <meta property="og:locale" content="en_US" />
@@ -94,30 +65,14 @@ const jsonLd = {
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1600" />
-    <meta property="og:image:height" content="1200" />
-    <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5..125,400..800;1,62.5..125,400..800&display=swap"
-      rel="stylesheet"
-    />
-    <script is:inline>
-      // Progressive enhancement flag
-      document.documentElement.classList.remove('no-js');
-      document.documentElement.classList.add('js');
-    </script>
   </head>
-  <body>
+  <body class={theme === 'light' ? 'theme-light' : ''}>
     <slot />
     <Analytics />
   </body>

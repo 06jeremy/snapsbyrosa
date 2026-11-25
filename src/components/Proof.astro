@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import { getLocalImage } from '../lib/images.ts';
+
+// One real client video. Poster is a plain /public path: it feeds the
+// <video poster> attribute directly, not astro:assets.
+const video = {
+  src: '/video/testimonial-akeela-csa.mp4',
+  poster: '/img/testimonial-akeela-poster.jpg',
+  name: 'Akeela Martin',
+  role: 'CSA',
+};
+---
+<section class="proof panel" id="proof" aria-labelledby="proof-title">
+  <div class="panel__bg">
+    <Image src={getLocalImage('portfolio-32.jpg')} alt="" widths={[768, 1280, 1920]} sizes="100vw" format="webp" quality={60} loading="lazy" decoding="async" style="object-position: 50% 30%" />
+  </div>
+  <div class="container proof__in">
+    <div class="proof__text">
+      <h2 id="proof-title" class="display proof__title">What clients say</h2>
+      <p class="proof__who"><strong>{video.name}</strong>, {video.role}</p>
+    </div>
+    <video class="proof__video" controls playsinline preload="none" poster={video.poster}>
+      <source src={video.src} type="video/mp4" />
+      Your browser can’t play this video.
+    </video>
+  </div>
+</section>
+
+<style>
+  .proof::after { background: linear-gradient(180deg, rgba(23,19,15,0.78) 0%, rgba(23,19,15,0.9) 100%); }
+  .proof { justify-content: center; }
+  .proof__in { display: grid; grid-template-columns: 1fr auto; gap: clamp(2rem, 6vw, 6rem); align-items: center; }
+  .proof__title { font-size: clamp(3.2rem, 9vw, 8.5rem); }
+  .proof__who { margin-top: 1.25rem; font-size: 1.15rem; }
+  .proof__video { width: min(340px, 80vw); aspect-ratio: 9 / 16; object-fit: cover; background: var(--night); border-radius: 2px; }
+  @media (max-width: 720px) {
+    .proof__in { grid-template-columns: 1fr; }
+  }
+</style>

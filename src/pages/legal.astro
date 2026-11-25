@@ -15,13 +15,13 @@ const updated = '22 July 2026';
 const title = 'Legal, privacy & FAQ — SNAPSBYROSA';
 const description = 'FAQ, booking & shoot terms, business details, privacy policy (GDPR/AVG) and cookie information for SNAPSBYROSA, The Hague.';
 ---
-<Layout title={title} description={description} path="/legal">
+<Layout title={title} description={description} path="/legal" theme="light">
   <a href="#main" class="skip-link">Skip to content</a>
-  <Nav solid />
+  <Nav light />
   <main id="main" class="legal">
     <div class="container">
       <header class="legal__head">
-        <a class="legal__back" href="/home/"><span aria-hidden="true">←</span> Back to site</a>
+        <a class="legal__back" href="/"><span aria-hidden="true">←</span> Back to site</a>
         <h1 class="legal__title condensed">Legal, privacy &amp; FAQ</h1>
         <p class="legal__updated">Last updated: {updated}</p>
       </header>
@@ -301,12 +301,8 @@ const description = 'FAQ, booking & shoot terms, business details, privacy polic
       </p>
     </div>
   </main>
-  <Footer />
+  <Footer light />
 </Layout>
-
-<script>
-  import '../scripts/main.js';
-</script>
 
 <style>
   .legal { padding-top: clamp(6rem, 12vw, 9rem); padding-bottom: clamp(3rem, 7vw, 5rem); }

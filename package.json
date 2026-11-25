@@ -9,7 +9,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^4.16.18",
-    "gsap": "^3.12.5"
+    "@fontsource-variable/archivo": "^5.3.0",
+    "astro": "^4.16.18"
   }
 }
